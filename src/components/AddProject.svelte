@@ -1,14 +1,12 @@
 <script lang="ts">
-    import { fade } from 'svelte/transition';
-
     let isHovered = false;
 
-	export let addBoard = () => {}
+	export let addProject = () => {}
 </script>
 
 
 <button 
-    on:click={() => addBoard()}  
+    on:click={() => addProject()}  
     class="w-8 h-8 text-white bg-red-800 rounded-md mb-4"
 >
     <p

@@ -9,4 +9,4 @@
 
 <h1>There will be dashboard</h1>
 
-<a href="/boards">Boards</a>
+<a href="/projects">Projects</a>

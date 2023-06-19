@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { boards } from '$lib/BoardsStore';
+	import { projects } from '$lib/BoardsStore';
 	import { vocab } from '../vocab';
     import Board from '../../components/Board.svelte';
-    import AddBoard from '../../components/AddBoard.svelte';
+    import AddProject from '../../components/AddProject.svelte';
 
-	const addBoard = () => {
-        $boards = [...$boards, { boardId: $boards.length + 1, boardName: `${vocab[Math.floor(Math.random() * vocab.length) + 1]} board`, kanbanBoards: [] }];
+	const addProject = () => {
+    $projects = [...$projects, { projectName: `${vocab[Math.floor(Math.random() * vocab.length) + 1]} board` }];
 	};
 </script>
 
@@ -13,11 +13,11 @@
     <title>Boards</title>
 </svelte:head>
 
-<AddBoard {addBoard}/>
+<AddProject {addProject}/>
 
 <div class="flex gap-4 flex-wrap">
-    {#each $boards as board}
-    	<Board {board}/>
+    {#each $projects as project}
+    	<Board project={project}/>
     {/each}
 </div>
 

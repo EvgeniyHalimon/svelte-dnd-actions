@@ -1,14 +1,14 @@
 <script lang="ts">
-	import type { IBoards } from '../routes/types';
-	import { boards } from '$lib/BoardsStore';
+	import type { IProjects } from '../routes/types';
+	import { projects } from '$lib/BoardsStore';
 	import { goto } from '$app/navigation';
 
-	export let board: IBoards;
+	export let project: IProjects;
 	/* let newBoardName = board.boardName;
 	let isChanging = false;
 	const changeBoardName = (id: number) => {
-		boards.update((boards) =>
-			boards.map((board) => {
+		projects.update((projects) =>
+			projects.map((board) => {
 				if (board.boardId === id) {
 					return { ...board, boardName: newBoardName };
 				}
@@ -16,7 +16,7 @@
 			})
 		);
 		isChanging = false;
-		$boards = $boards;
+		$projects = $projects;
 	};
 
 	function toggle() {
@@ -25,17 +25,17 @@
 
 	const goToBoard = (e: KeyboardEvent) => {
 		if (e.key === 'Enter') {
-			goto(`/boards/${board.boardName}`)
+			goto(`/projects/${project.projectName}`)
 		}
 	}
 </script>
 
 <button 
 	class="h-10 bg-slate-400 rounded-[5px] text-white py-2 px-3 cursor-pointer hover:bg-slate-300 transition-all duration-300" 
-	on:click={()=>goto(`/boards/${board.boardName}`)} 
+	on:click={()=>goto(`/projects/${project.projectName}`)} 
 	on:keydown={(e) => goToBoard(e)}
 >
-	<p class="flex w-full align-center">{board.boardName}</p>
+	<p class="flex w-full align-center">{project.projectName}</p>
 </button>
 <!-- {#if isChanging}
 	
