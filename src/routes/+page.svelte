@@ -1,51 +1,12 @@
-<script lang="ts">
-	import { dndzone } from 'svelte-dnd-action';
-	import {flip} from 'svelte/animate'
-	import Card from '../components/Card.svelte';
-
-	const FLIP_DURATION = 100
-	
-	interface ListItem {
-		id: number,
-		title: string,
-		description: string,
-		tags: string[],
-	}
-	
-	let items: ListItem[] = [
-		{
-			id: 1,
-			title: 'Svelte',
-			description: '',
-			tags: ['unabomber', 'ted k']
-		},
-		{
-			id: 2,
-			title: 'SvelteKit',
-			description: '',
-			tags: ['unabomber']
-		}
-	];
-
-	const handleConsider = (e: CustomEvent<DndEvent<ListItem>>) => {
-		items = e.detail.items
-	};
-
-	const handleFinalize = (e: CustomEvent<DndEvent<ListItem>>) => {
-		items = e.detail.items
-	};
+<script lang='ts'>
+	// The ordering of these imports is critical to your app working properly
+	import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
+	// If you have source.organizeImports set to true in VSCode, then it will auto change this ordering
+	import '@skeletonlabs/skeleton/styles/skeleton.css';
+	// Most of your app wide CSS should be put in this file
+	import '../app.postcss';
 </script>
 
-<div class="container h-full mx-auto flex justify-center items-center">
-	<section 
-		use:dndzone="{{ items: items, flipDurationMs: FLIP_DURATION, dropTargetStyle: {} }}"
-		on:consider="{handleConsider}" 
-		on:finalize="{handleFinalize}"
-	>
-		{#each items as item (item.id)}
-			<div class="card card-hover w-96 my-4" animate:flip="{{duration: FLIP_DURATION}}">
-				<Card cardItem={item}/>
-			</div>
-		{/each}
-	</section>
-</div>
+<h1>There will be dashboard</h1>
+
+<a href="/boards">Boards</a>

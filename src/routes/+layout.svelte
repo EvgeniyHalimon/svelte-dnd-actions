@@ -5,7 +5,15 @@
 	import '@skeletonlabs/skeleton/styles/skeleton.css';
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
-	export const prerender = true;
 </script>
 
-<slot />
+
+<div class='p-8 h-screen'>
+    <nav class='pb-8'>
+        <a href="/" class="font-semibold text-3xl mr-6">Dashboard</a>
+        <a href="/boards" class="font-semibold text-3xl">Boards</a>
+    </nav>
+
+	<slot />
+</div>
+
