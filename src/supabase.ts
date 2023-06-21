@@ -5,3 +5,8 @@ const supabaseAnonKey = import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY
 // Create a single supabase client for interacting with your database
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
+type Table = 'projects' | 'kanbanBoards' | 'tickets'
+
+export const supabaseRoot = (table: Table) => {
+    return supabase.from(table)
+}

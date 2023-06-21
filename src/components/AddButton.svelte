@@ -1,13 +1,13 @@
 <script lang="ts">
     let isHovered = false;
 
-	export let addProject = () => {}
+	export let add = () => {}
 </script>
 
 
 <button 
-    on:click={() => addProject()}  
-    class="w-8 h-8 text-white bg-red-800 rounded-md mb-4"
+    on:click={() => add()}  
+    class="w-8 h-8 min-w-[2rem] text-white bg-red-800 rounded-md mb-4"
 >
     <p
         class="box text-lg h-8 font-semibold"

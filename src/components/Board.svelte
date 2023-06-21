@@ -25,14 +25,14 @@
 
 	const goToBoard = (e: KeyboardEvent) => {
 		if (e.key === 'Enter') {
-			goto(`/projects/${project.projectName}`)
+			goto(`/projects/${project.id}`)
 		}
 	}
 </script>
 
 <button 
 	class="h-10 bg-slate-400 rounded-[5px] text-white py-2 px-3 cursor-pointer hover:bg-slate-300 transition-all duration-300" 
-	on:click={()=>goto(`/projects/${project.projectName}`)} 
+	on:click={()=>goto(`/projects/${project.id}`)} 
 	on:keydown={(e) => goToBoard(e)}
 >
 	<p class="flex w-full align-center">{project.projectName}</p>

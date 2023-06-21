@@ -38,6 +38,7 @@
 	"type": "module",
 	"dependencies": {
 		"@supabase/supabase-js": "^2.25.0",
+		"iconify-icon": "^1.0.7",
 		"svelte-dnd-action": "^0.9.22"
 	}
 }
