@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { ticketRepository } from '$lib/repository/ticketsRepository';
 	import type { ITicket } from '../routes/types';
+	import EditIcon from './icons/EditIcon.svelte';
+	import SendIcon from './icons/SendIcon.svelte';
 
 	export let ticket: ITicket;
 	let isEditing = false;
@@ -27,13 +29,11 @@
 	{/if}
 	{#if !isEditing}
 		<button on:click={() => isEditing = true}>
-			<iconify-icon
-				icon="streamline:interface-edit-pencil-change-edit-modify-pencil-write-writing"
-			/>
+			<EditIcon/>
 		</button>
 	{:else}
 		<button on:click={() => updateTitle(Number(ticket.id))}>
-			<iconify-icon icon="carbon:send-alt" />
+			<SendIcon/>
 		</button>
 	{/if}
 </div>

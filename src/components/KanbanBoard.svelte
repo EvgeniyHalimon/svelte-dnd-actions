@@ -5,6 +5,8 @@
 	import { onMount } from 'svelte';
 	import { ticketRepository } from '$lib/repository/ticketsRepository';
 	import Ticket from '$components/Ticket.svelte';
+	import EditIcon from './icons/EditIcon.svelte';
+	import DeleteIcon from './icons/DeleteIcon.svelte';
 
 	export let board: IKanbanBoard;
 	export let projectID: number;
@@ -65,15 +67,10 @@
 		{/if}
 		<div class="flex items-center gap-2">
 			<button class="cursor-pointer h-4" on:click={() => setIsEditing(board.boardName)}>
-				<iconify-icon
-					icon="streamline:interface-edit-pencil-change-edit-modify-pencil-write-writing"
-				/>
+				<EditIcon/>
 			</button>
 			<button class="cursor-pointer h-4" on:click={() => deleteBoard(Number(board?.id))}>
-				<iconify-icon
-					icon="streamline:interface-edit-skull-1-crash-death-delete-die-error-garbage-remove-skull-trash"
-					class="w-6"
-				/>
+				<DeleteIcon/>
 			</button>
 		</div>
 	</div>

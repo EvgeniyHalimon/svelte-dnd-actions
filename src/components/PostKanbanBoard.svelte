@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { kanbanBoards } from '$lib/BoardsStore';
 	import { kanbanBoardsRepository } from '$lib/repository/kanbanBoards.js';
+	import SendIcon from './icons/SendIcon.svelte';
 
 	export let isEditing;
 	export let projectID: number;
@@ -36,7 +37,9 @@
 		autofocus
 		on:keydown={(e) => addBoard(e)}
 	/>
-	<button class="h-4" on:click={add}><iconify-icon icon="carbon:send-alt"></iconify-icon></button>
+	<button class="h-4" on:click={add}>
+		<SendIcon/>
+	</button>
 </div>
 
 <style>
