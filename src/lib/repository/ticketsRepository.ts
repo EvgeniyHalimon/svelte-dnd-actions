@@ -1,22 +1,37 @@
+import type { ITicket } from "../../routes/types.js";
 import { supabase } from "../../supabase.js";
 
-export const ticketBoardsRepository = {
+export const ticketRepository = {
 
-    get: async (id: number) => {
+    getByProjectID: async (projectID: number): Promise<ITicket[] | [] | null> => {
 
-        const { data, error } = await supabase.from('tickets').select().eq('id', id)
+        const { data: tickets, error } = await supabase
+            .from('tickets')
+            .select()
+            .eq('projectID', projectID)
 
         if (error) {
-            return console.error(error, 'Error loading of tickets')
+            console.error(error, 'Error loading of tickets')
         }
-
+        return tickets
+    },
+    getByBoardID: async (boardID: number): Promise<any> => {
+        const { data, error } = await supabase
+            .from('tickets')
+            .select("*")
+            .eq('boardID', boardID)
         return data
     },
-    post: async () => {
-        1
-    },
-    update: async () => {
-        1
+    updateTitle: async (id: number, title: string) => {
+
+        const { data, error } = await supabase
+            .from('tickets')
+            .update({ title: title })
+            .eq('id', id)
+        if (error) {
+            console.error(error, 'Error loading of tickets')
+        }
+        return data
 
     },
     delete: async () => {

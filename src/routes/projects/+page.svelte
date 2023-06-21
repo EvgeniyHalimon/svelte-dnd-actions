@@ -3,12 +3,16 @@
 	import { vocab } from '../vocab';
 	import Board from '../../components/Board.svelte';
 	import AddProject from '../../components/AddButton.svelte';
+	import { projectRepository } from '$lib/repository/projectsRepository';
 
-	const add = () => {
-		$projects = [
+	const add = async () => {
+		/* $projects = [
 			...$projects,
 			{ projectName: `${vocab[Math.floor(Math.random() * vocab.length) + 1]} board` }
-		];
+		]; */
+
+		await projectRepository.post({ projectName: `${vocab[Math.floor(Math.random() * vocab.length) + 1]} board` })
+		projects.set(await projectRepository.get())
 	};
 </script>
 

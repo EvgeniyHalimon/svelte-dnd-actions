@@ -28,7 +28,6 @@ export const kanbanBoardsRepository = {
             .from('kanbanBoards')
             .update({ boardName: newBoardName })
             .eq('id', id)
-        console.log("🚀 ~ file: kanbanBoards.ts:30 ~ update: ~ data:", data)
 
         if (error) {
             return console.error(error, 'Error updating of kanbanBoards')
