@@ -15,6 +15,12 @@
 	let isEditing = false;
 	let tickets = [] as ITicket[];
 
+	let isVisible = false;
+
+	function toggleVisibility() {
+		isVisible = !isVisible;
+	}
+
 	const sortByPosition = (array: any) => {
 		return array.sort((a: any, b: any) => a.position - b.position);
 	};
@@ -49,10 +55,13 @@
 	async function getTickets(id: number) {
 		return await ticketRepository.getByBoardID(id);
 	}
-	
 </script>
 
-<div class="h-full w-64 min-w-[16rem] rounded-md bg-gray-800 p-3">
+<div 
+	class="h-full w-64 min-w-[16rem] rounded-md bg-gray-800 p-3"
+	on:mouseenter={toggleVisibility}
+    on:mouseleave={toggleVisibility}
+>
 	<div class="flex justify-between items-baseline">
 		{#if !isEditing}
 			<p>{board?.boardName}</p>
@@ -65,12 +74,14 @@
 				on:blur={() => updateBoardName(Number(board.id), boardName)}
 			/>
 		{/if}
-		<div class="flex items-center gap-2">
-			<button class="cursor-pointer h-4" on:click={() => setIsEditing(board.boardName)}>
-				<EditIcon/>
+		<div 
+			class="flex items-center gap-2 {isVisible ?'opacity-100' : 'opacity-0'} transition-all duration-200"
+		>
+			<button class="cursor-pointer h-4 hover:opacity-50 transition-all duration-200" on:click={() => setIsEditing(board.boardName)}>
+				<EditIcon />
 			</button>
-			<button class="cursor-pointer h-4" on:click={() => deleteBoard(Number(board?.id))}>
-				<DeleteIcon/>
+			<button class="cursor-pointer h-4 hover:opacity-50 transition-all duration-200" on:click={() => deleteBoard(Number(board?.id))}>
+				<DeleteIcon />
 			</button>
 		</div>
 	</div>
@@ -78,7 +89,7 @@
 		<p>...waiting</p>
 	{:then tickData}
 		{#each tickData as ticket}
-			<Ticket {ticket}/>
+			<Ticket {ticket} />
 		{/each}
 	{:catch error}
 		<p style="color: red">{error.message}</p>

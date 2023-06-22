@@ -37,7 +37,7 @@
 		autofocus
 		on:keydown={(e) => addBoard(e)}
 	/>
-	<button class="h-4" on:click={add}>
+	<button class="h-4 hover:opacity-50 transition-all duration-200" on:click={add}>
 		<SendIcon/>
 	</button>
 </div>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ticketRepository } from '$lib/repository/ticketsRepository';
 	import type { ITicket } from '../routes/types';
+	import DeleteIcon from './icons/DeleteIcon.svelte';
 	import EditIcon from './icons/EditIcon.svelte';
 	import SendIcon from './icons/SendIcon.svelte';
 
@@ -8,15 +9,25 @@
 	let isEditing = false;
     let newTitle = ticket.title
 
+	let isVisible = false;
+
+	function toggleVisibility() {
+		isVisible = !isVisible;
+	}
+
     const updateTitle = async (id: number) => {
         await ticketRepository.updateTitle(id, newTitle)
         isEditing = false
     }
 </script>
 
-<div class="flex justify-between items-center bg-slate-600 rounded-md min-w-[14rem] h-full break-words p-2 mt-3">
+<div 
+	class="flex justify-between items-center bg-slate-600 rounded-md min-w-[14rem] h-full break-words p-2 mt-3 hover:bg-slate-500 translate-all duration-300"
+	on:mouseenter={toggleVisibility}
+    on:mouseleave={toggleVisibility}
+>
 	{#if !isEditing}
-		<p class="">
+		<p>
 			{newTitle}
 		</p>
 	{:else}
@@ -28,9 +39,14 @@
 		/>
 	{/if}
 	{#if !isEditing}
-		<button on:click={() => isEditing = true}>
-			<EditIcon/>
-		</button>
+		<div class="{isVisible ? 'opacity-100' : 'opacity-0'} flex items-center gap-2 transition-all duration-200 h-5">
+			<button class="h-4 text-sm hover:opacity-50 transition-all duration-200" on:click={() => isEditing = true}>
+				<EditIcon/>
+			</button>
+			<button class="h-4 w-4 text-sm hover:opacity-50 transition-all duration-200">
+				<DeleteIcon />
+			</button>
+		</div>
 	{:else}
 		<button on:click={() => updateTitle(Number(ticket.id))}>
 			<SendIcon/>
