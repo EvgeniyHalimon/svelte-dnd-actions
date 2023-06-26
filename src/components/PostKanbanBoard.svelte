@@ -16,12 +16,12 @@
 		boardName = '';
 		isEditing = false;
 		kanbanBoards.set(await kanbanBoardsRepository.get(projectID));
-	}
+	};
 
 	const addBoard = async (e: KeyboardEvent) => {
 		if (e.key === 'Enter') {
-			add()
-		} else if (e.key === 'Escape'){
+			add();
+		} else if (e.key === 'Escape') {
 			boardName = '';
 			isEditing = false;
 			return;
@@ -38,7 +38,7 @@
 		on:keydown={(e) => addBoard(e)}
 	/>
 	<button class="h-4 hover:opacity-50 transition-all duration-200" on:click={add}>
-		<SendIcon/>
+		<SendIcon />
 	</button>
 </div>
 

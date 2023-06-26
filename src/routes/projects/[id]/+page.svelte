@@ -9,7 +9,7 @@
 	let isEditing = false;
 	kanbanBoards.set(data.kanbanBoards);
 	let projectID = Number($page.params.id);
-	
+
 	const add = () => {
 		isEditing = true;
 	};
@@ -26,7 +26,7 @@
 		<KanbanBoard {board} {projectID} />
 	{/each}
 	{#if isEditing}
-		<PostKanbanBoard bind:isEditing {projectID}/>
+		<PostKanbanBoard bind:isEditing {projectID} />
 	{/if}
 	<AddKanbanBoard {add} />
 </div>

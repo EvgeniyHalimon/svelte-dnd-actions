@@ -25,18 +25,19 @@
 
 	const goToBoard = (e: KeyboardEvent) => {
 		if (e.key === 'Enter') {
-			goto(`/projects/${project.id}`)
+			goto(`/projects/${project.id}`);
 		}
-	}
+	};
 </script>
 
-<button 
-	class="h-10 bg-slate-400 rounded-[5px] text-white py-2 px-3 cursor-pointer hover:bg-slate-300 transition-all duration-300" 
-	on:click={()=>goto(`/projects/${project.id}`)} 
+<button
+	class="h-10 bg-slate-400 rounded-[5px] text-white py-2 px-3 cursor-pointer hover:bg-slate-300 transition-all duration-300"
+	on:click={() => goto(`/projects/${project.id}`)}
 	on:keydown={(e) => goToBoard(e)}
 >
 	<p class="flex w-full align-center">{project.projectName}</p>
 </button>
+
 <!-- {#if isChanging}
 	
 	<form
@@ -59,7 +60,7 @@
 {/if} -->
 
 <style>
-	.formInput:focus{
+	.formInput:focus {
 		outline: 0;
 		border: 0;
 		box-shadow: none;

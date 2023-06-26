@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import { ticketRepository } from '$lib/repository/ticketsRepository';
 	import Ticket from '$components/Ticket.svelte';
+	import AddTicket from '$components/AddTicket.svelte';
 	import EditIcon from './icons/EditIcon.svelte';
 	import DeleteIcon from './icons/DeleteIcon.svelte';
 
@@ -21,7 +22,7 @@
 		isVisible = !isVisible;
 	}
 
-	const sortByPosition = (array: any) => {
+	export const sortByPosition = (array: any) => {
 		return array.sort((a: any, b: any) => a.position - b.position);
 	};
 
@@ -53,14 +54,15 @@
 	});
 
 	async function getTickets(id: number) {
-		return await ticketRepository.getByBoardID(id);
+		const data = await ticketRepository.getByBoardID(id);
+		return sortByPosition(data);
 	}
 </script>
 
-<div 
+<div
 	class="h-full w-64 min-w-[16rem] rounded-md bg-gray-800 p-3"
 	on:mouseenter={toggleVisibility}
-    on:mouseleave={toggleVisibility}
+	on:mouseleave={toggleVisibility}
 >
 	<div class="flex justify-between items-baseline">
 		{#if !isEditing}
@@ -74,13 +76,21 @@
 				on:blur={() => updateBoardName(Number(board.id), boardName)}
 			/>
 		{/if}
-		<div 
-			class="flex items-center gap-2 {isVisible ?'opacity-100' : 'opacity-0'} transition-all duration-200"
+		<div
+			class="flex items-center gap-2 {isVisible
+				? 'opacity-100'
+				: 'opacity-0'} transition-all duration-200"
 		>
-			<button class="cursor-pointer h-4 hover:opacity-50 transition-all duration-200" on:click={() => setIsEditing(board.boardName)}>
+			<button
+				class="cursor-pointer h-4 hover:opacity-50 transition-all duration-200"
+				on:click={() => setIsEditing(board.boardName)}
+			>
 				<EditIcon />
 			</button>
-			<button class="cursor-pointer h-4 hover:opacity-50 transition-all duration-200" on:click={() => deleteBoard(Number(board?.id))}>
+			<button
+				class="cursor-pointer h-4 hover:opacity-50 transition-all duration-200"
+				on:click={() => deleteBoard(Number(board?.id))}
+			>
 				<DeleteIcon />
 			</button>
 		</div>
@@ -88,9 +98,11 @@
 	{#await getTickets(Number(board.id))}
 		<p>...waiting</p>
 	{:then tickData}
+		{@const position = tickData.length + 1}
 		{#each tickData as ticket}
 			<Ticket {ticket} />
 		{/each}
+		<AddTicket {position} data={board} {getTickets} />
 	{:catch error}
 		<p style="color: red">{error.message}</p>
 	{/await}

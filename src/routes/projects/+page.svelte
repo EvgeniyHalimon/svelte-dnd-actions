@@ -11,8 +11,10 @@
 			{ projectName: `${vocab[Math.floor(Math.random() * vocab.length) + 1]} board` }
 		]; */
 
-		await projectRepository.post({ projectName: `${vocab[Math.floor(Math.random() * vocab.length) + 1]} board` })
-		projects.set(await projectRepository.get())
+		await projectRepository.post({
+			projectName: `${vocab[Math.floor(Math.random() * vocab.length) + 1]} board`
+		});
+		projects.set(await projectRepository.get());
 	};
 </script>
 
