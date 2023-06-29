@@ -1,6 +1,8 @@
 import { writable } from 'svelte/store';
-import type { IProjects, IKanbanBoard } from '../routes/types';
+import type { IProjects, IKanbanBoard, TransformedTicketArray } from '../routes/types';
 import { projectRepository } from '$lib/repository/projectsRepository';
+
+
 
 export const projects = writable<IProjects[] | []>([]);
 
@@ -12,3 +14,4 @@ export const loadProjects = async () => {
 loadProjects();
 
 export const kanbanBoards = writable<IKanbanBoard[] | any>([]);
+export const tickets = writable<any>([]);

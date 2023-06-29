@@ -1,16 +1,23 @@
 <script lang="ts">
+	import { tickets } from '$lib/BoardsStore';
 	import { ticketRepository } from '$lib/repository/ticketsRepository';
 	import SendIcon from './icons/SendIcon.svelte';
 	export let position: number;
 	export let data: any;
-	export let getTickets: any;
 
 	let ticketTitle: string;
 
 	const addTicket = async () => {
 		await ticketRepository.post(position, { ...data, title: ticketTitle });
-		await getTickets(data.id);
+		tickets.update((tickets: any) => [...tickets, {
+			boardID: data.id,
+			title: ticketTitle,
+			description: '',
+			position: position,
+			projectID: data.projectID
+		}])
 		ticketTitle = '';
+		isPosting = false;
 	};
 
 	let isPosting = false;

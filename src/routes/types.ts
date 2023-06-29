@@ -8,7 +8,7 @@ export interface ITicket {
 }
 
 export interface IKanbanBoard {
-	id?: number;
+	id: number;
 	created_at?: string;
 	projectID?: number;
 	boardName: string;
@@ -20,3 +20,6 @@ export interface IProjects {
 	created_at?: any;
 	projectName: string;
 }
+
+  
+export type TransformedTicketArray = Record<string, ITicket[]>

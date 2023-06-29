@@ -1,26 +1,25 @@
 <script lang="ts">
-	import { kanbanBoards } from '$lib/BoardsStore';
+	import { kanbanBoards, tickets } from '$lib/BoardsStore';
 	import { kanbanBoardsRepository } from '$lib/repository/kanbanBoards';
 	import type { IKanbanBoard, ITicket } from '../routes/types';
 	import { onMount } from 'svelte';
 	import { ticketRepository } from '$lib/repository/ticketsRepository';
-	import Ticket from '$components/Ticket.svelte';
+	import { flip } from 'svelte/animate';
+	import { dndzone } from 'svelte-dnd-action';
+
 	import AddTicket from '$components/AddTicket.svelte';
+	import Ticket from '$components/Ticket.svelte';
 	import EditIcon from './icons/EditIcon.svelte';
 	import DeleteIcon from './icons/DeleteIcon.svelte';
 
 	export let board: IKanbanBoard;
 	export let projectID: number;
 
+	const flipDurationMs = 200;
+
 	let boardName = '';
 	let isEditing = false;
-	let tickets = [] as ITicket[];
-
-	let isVisible = false;
-
-	function toggleVisibility() {
-		isVisible = !isVisible;
-	}
+	let isLoading = true;
 
 	export const sortByPosition = (array: any) => {
 		return array.sort((a: any, b: any) => a.position - b.position);
@@ -49,22 +48,53 @@
 	};
 
 	onMount(async () => {
-		const data = await ticketRepository.getByProjectID(projectID);
-		tickets = data as ITicket[];
+		const data = (await ticketRepository.getByProjectID(projectID)) as ITicket[];
+
+		const formatedBoards = $kanbanBoards.map((board: IKanbanBoard) => {
+			for (let index = 0; index < data?.length; index++) {
+				if (board.id == data[index].boardID) {
+					return {
+						...board,
+						items: data.filter((ticket) => ticket.boardID == data[index].boardID)
+					};
+				} else {
+					return {
+						...board,
+						items: []
+					};
+				}
+			}
+		});
+		console.log("🚀 ~ file: KanbanBoard.svelte:63 ~ formatedBoards ~ formatedBoards:", formatedBoards)
+		tickets.set(formatedBoards);
+		isLoading = false;
 	});
 
-	async function getTickets(id: number) {
-		const data = await ticketRepository.getByBoardID(id);
-		return sortByPosition(data);
+	function getNextPosition(array: ITicket[], boardID: number) {
+		const data = array.filter((ticket) => ticket.boardID == boardID);
+		return data.length + 1;
+	}
+
+	function handleDndConsiderColumns(e: any) {
+		$tickets = e.detail.items;
+	}
+	function handleDndFinalizeColumns(e: any) {
+		$tickets = e.detail.items;
+	}
+	function handleDndConsiderCards(cid: number, e: any) {
+		const colIdx = $tickets.findIndex((c: ITicket) => c.id === cid);
+		$tickets[colIdx].items = e.detail.items;
+		$tickets = [...$tickets];
+	}
+	function handleDndFinalizeCards(cid: number, e: any) {
+		const colIdx = $tickets.findIndex((c: ITicket) => c.id === cid);
+		$tickets[colIdx].items = e.detail.items;
+		$tickets = [...$tickets];
 	}
 </script>
 
-<div
-	class="h-full w-64 min-w-[16rem] rounded-md bg-gray-800 p-3"
-	on:mouseenter={toggleVisibility}
-	on:mouseleave={toggleVisibility}
->
-	<div class="flex justify-between items-baseline">
+<div class="h-full w-64 min-w-[16rem] rounded-md bg-gray-800 p-3">
+	<!-- <div class="flex justify-between items-baseline">
 		{#if !isEditing}
 			<p>{board?.boardName}</p>
 		{:else}
@@ -76,11 +106,7 @@
 				on:blur={() => updateBoardName(Number(board.id), boardName)}
 			/>
 		{/if}
-		<div
-			class="flex items-center gap-2 {isVisible
-				? 'opacity-100'
-				: 'opacity-0'} transition-all duration-200"
-		>
+		<div class="flex items-center gap-2">
 			<button
 				class="cursor-pointer h-4 hover:opacity-50 transition-all duration-200"
 				on:click={() => setIsEditing(board.boardName)}
@@ -94,71 +120,68 @@
 				<DeleteIcon />
 			</button>
 		</div>
-	</div>
-	{#await getTickets(Number(board.id))}
-		<p>...waiting</p>
-	{:then tickData}
-		{@const position = tickData.length + 1}
-		{#each tickData as ticket}
-			<Ticket {ticket} />
-		{/each}
-		<AddTicket {position} data={board} {getTickets} />
-	{:catch error}
-		<p style="color: red">{error.message}</p>
-	{/await}
+	</div> -->
+	{#if !isLoading}
+		<section
+			use:dndzone={{ items: $tickets, flipDurationMs, type: 'columns' }}
+			on:consider={handleDndConsiderColumns}
+			on:finalize={handleDndFinalizeColumns}
+		>
+			{#each $tickets as ticket (ticket.id)}
+				<div class="column" animate:flip="{{duration: flipDurationMs}}">
+					<div class="column-title">{ticket?.boardName}</div>
+					<div
+						class="column-content"
+						use:dndzone={{ items: ticket.items, flipDurationMs }}
+						on:consider={(e) => handleDndConsiderCards(ticket.id, e)}
+						on:finalize={(e) => handleDndFinalizeCards(ticket.id, e)}
+					>
+						{#each ticket?.items as item (item.id)}
+							<div class="card" animate:flip={{ duration: flipDurationMs }}>
+								{item?.title}
+							</div>
+						{/each}
+					</div>
+				</div>
+			{/each}
+		</section>
+		<!-- <AddTicket position={getNextPosition($tickets, Number(board?.id))} data={board} /> -->
+		{:else}
+		<p>Loading...</p>
+	{/if}
 </div>
-
-<!-- <script lang="ts">
-	import { dndzone } from 'svelte-dnd-action';
-	import {flip} from 'svelte/animate'
-	import type { ListItem } from '../routes/types';
-	import Card from './Card.svelte';
-
-	const FLIP_DURATION = 100
-	
-	let items: ListItem[] = [
-		{
-			id: 1,
-			title: 'Svelte',
-			description: '',
-			tags: ['unabomber', 'ted k']
-		},
-		{
-			id: 2,
-			title: 'SvelteKit',
-			description: '',
-			tags: ['unabomber']
-		}
-	];
-
-	const handleConsider = (e: CustomEvent<DndEvent<ListItem>>) => {
-		items = e.detail.items
-	};
-
-	const handleFinalize = (e: CustomEvent<DndEvent<ListItem>>) => {
-		items = e.detail.items
-	};
-</script>
-
-<div class="container h-full mx-auto flex justify-center items-center">
-	<section 
-		use:dndzone="{{ items: items, flipDurationMs: FLIP_DURATION, dropTargetStyle: {} }}"
-		on:consider="{handleConsider}" 
-		on:finalize="{handleFinalize}"
-	>
-		{#each items as item (item.id)}
-			<div class="card card-hover w-96 my-4" animate:flip="{{duration: FLIP_DURATION}}">
-				<Card cardItem={item}/>
-			</div>
-		{/each}
-	</section>
-</div>
- -->
 
 <style>
 	.formInput:focus {
 		outline: 0;
 		border: 0;
 		box-shadow: none;
+	}
+	.column {
+		height: auto;
+		width: 250px;
+		padding: 0.5em;
+		margin: 1em;
+		float: left;
+		border: 1px solid #333333;
+	}
+	.column-content {
+		height: auto;
+	}
+	.column-title {
+		margin-bottom: 1em;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.card {
+		height: 15%;
+		width: 100%;
+		margin: 0.4em 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: #eb9696;
+		border: 1px solid #333333;
 	}
 </style>
