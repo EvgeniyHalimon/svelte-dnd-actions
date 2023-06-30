@@ -1,23 +1,32 @@
 <script lang="ts">
-	import { tickets } from '$lib/BoardsStore';
+	import { tickets, kanbanBoards } from '$lib/BoardsStore';
+	import { kanbanBoardsRepository } from '$lib/repository/kanbanBoards';
 	import { ticketRepository } from '$lib/repository/ticketsRepository';
+	import type { IKanbanBoard, ITicket } from '../routes/types';
 	import SendIcon from './icons/SendIcon.svelte';
 	export let position: number;
 	export let data: any;
+	export let i: number;
 
 	let ticketTitle: string;
 
 	const addTicket = async () => {
 		await ticketRepository.post(position, { ...data, title: ticketTitle });
-		tickets.update((tickets: any) => [...tickets, {
-			boardID: data.id,
-			title: ticketTitle,
-			description: '',
-			position: position,
-			projectID: data.projectID
-		}])
+		const ticketsByProjectId = (await ticketRepository.getByProjectID(data.projectID)) as ITicket[];
+		function transformArrays(boards: IKanbanBoard[], tickets: ITicket[]) {
+			const transformedBoard = boards.map((board: IKanbanBoard) => ({
+				id: board.id,
+				boardName: board.boardName,
+				projectID: board.projectID,
+				items: tickets.filter((ticket: ITicket) => ticket.boardID === board.id)
+			}));
+
+			return transformedBoard;
+		}
+
+		tickets.set(transformArrays($kanbanBoards, ticketsByProjectId));
 		ticketTitle = '';
-		isPosting = false;
+		isPosting = !isPosting;
 	};
 
 	let isPosting = false;
@@ -29,8 +38,8 @@
 </script>
 
 <div
-	class="{isPosting
-		? 'flex'
+	class="{isPosting === true
+		? 'flex mt-3'
 		: 'hidden'} justify-between items-center bg-slate-600 rounded-md min-w-[14rem] h-full break-words p-2 mt-3"
 >
 	<input

@@ -21,5 +21,4 @@ export interface IProjects {
 	projectName: string;
 }
 
-  
 export type TransformedTicketArray = Record<string, ITicket[]>

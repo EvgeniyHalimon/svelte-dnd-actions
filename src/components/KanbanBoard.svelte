@@ -47,28 +47,7 @@
 		boardName = currentBoardName;
 	};
 
-	onMount(async () => {
-		const data = (await ticketRepository.getByProjectID(projectID)) as ITicket[];
-
-		const formatedBoards = $kanbanBoards.map((board: IKanbanBoard) => {
-			for (let index = 0; index < data?.length; index++) {
-				if (board.id == data[index].boardID) {
-					return {
-						...board,
-						items: data.filter((ticket) => ticket.boardID == data[index].boardID)
-					};
-				} else {
-					return {
-						...board,
-						items: []
-					};
-				}
-			}
-		});
-		console.log("🚀 ~ file: KanbanBoard.svelte:63 ~ formatedBoards ~ formatedBoards:", formatedBoards)
-		tickets.set(formatedBoards);
-		isLoading = false;
-	});
+	
 
 	function getNextPosition(array: ITicket[], boardID: number) {
 		const data = array.filter((ticket) => ticket.boardID == boardID);
@@ -76,17 +55,23 @@
 	}
 
 	function handleDndConsiderColumns(e: any) {
+		console.log("🚀 ~ file: KanbanBoard.svelte:79 ~ handleDndConsiderColumns ~ e:", e)
 		$tickets = e.detail.items;
 	}
+	
 	function handleDndFinalizeColumns(e: any) {
 		$tickets = e.detail.items;
 	}
+
 	function handleDndConsiderCards(cid: number, e: any) {
+		console.log("🚀 ~ file: KanbanBoard.svelte:86 ~ handleDndConsiderCards ~ e:", e)
 		const colIdx = $tickets.findIndex((c: ITicket) => c.id === cid);
 		$tickets[colIdx].items = e.detail.items;
 		$tickets = [...$tickets];
 	}
+
 	function handleDndFinalizeCards(cid: number, e: any) {
+		console.log("🚀 ~ file: KanbanBoard.svelte:91 ~ handleDndFinalizeCards ~ e:", e)
 		const colIdx = $tickets.findIndex((c: ITicket) => c.id === cid);
 		$tickets[colIdx].items = e.detail.items;
 		$tickets = [...$tickets];

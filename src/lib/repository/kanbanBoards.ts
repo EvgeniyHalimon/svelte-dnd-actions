@@ -1,9 +1,9 @@
 import type { IKanbanBoard } from '../../routes/types.js';
-import { supabase } from '../../supabase.js';
+import { supabase, supabaseRoot } from '../../supabase.js';
 
 export const kanbanBoardsRepository = {
 	get: async (id: number) => {
-		const { data, error } = await supabase.from('kanbanBoards').select().eq('projectID', id);
+		const { data, error } = await supabaseRoot('kanbanBoards').select().eq('projectID', id);
 
 		if (error) {
 			return console.error(error, 'Error loading of kanbanBoards');
@@ -12,15 +12,14 @@ export const kanbanBoardsRepository = {
 		return data;
 	},
 	post: async (newBoard: IKanbanBoard) => {
-		const { data, error } = await supabase.from('kanbanBoards').insert([newBoard]);
+		const { data, error } = await supabaseRoot('kanbanBoards').insert([newBoard]);
 		if (error) {
 			return console.error(error, 'Error posting of kanbanBoards');
 		}
 	},
 	update: async (id: number, newBoardName: string) => {
 		console.log('🚀 ~ file: kanbanBoards.ts:26 ~ update: ~ id:', id, newBoardName);
-		const { data, error } = await supabase
-			.from('kanbanBoards')
+		const { data, error } = await supabaseRoot('kanbanBoards')
 			.update({ boardName: newBoardName })
 			.eq('id', id);
 
@@ -28,8 +27,17 @@ export const kanbanBoardsRepository = {
 			return console.error(error, 'Error updating of kanbanBoards');
 		}
 	},
+	updatePositions: async (tickets: any) => {
+		console.log('🚀 ~ file: kanbanBoards.ts:26 ~ update: ~ id:', tickets);
+		const { data, error } = await supabaseRoot('kanbanBoards')
+			.upsert(tickets)
+
+		if (error) {
+			return console.error(error, 'Error updating of kanbanBoards');
+		}
+	},
 	delete: async (id: number) => {
-		const { error } = await supabase.from('kanbanBoards').delete().eq('id', id);
+		const { error } = await supabaseRoot('kanbanBoards').delete().eq('id', id);
 
 		if (error) {
 			return console.error(error, 'Error deleting of kanbanBoards');

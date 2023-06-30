@@ -18,15 +18,14 @@ export const projectRepository = {
 		}
 	},
 	post: async (data: IProjects) => {
-		const { error } = await supabase.from('projects').insert([data]);
+		const { error } = await supabaseRoot('projects').insert([data]);
 
 		if (error) {
 			return console.error(error, 'Error of post new project');
 		}
 	},
 	update: async (id: number, projectName: IProjects) => {
-		const { error } = await supabase
-			.from('projects')
+		const { error } = await supabaseRoot('projects')
 			.update({ projectName: projectName })
 			.eq('id', id);
 

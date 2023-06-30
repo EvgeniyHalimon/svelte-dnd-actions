@@ -1,10 +1,9 @@
 import type { ITicket } from '../../routes/types.js';
-import { supabase } from '../../supabase.js';
+import { supabase, supabaseRoot } from '../../supabase';
 
 export const ticketRepository = {
 	getByProjectID: async (projectID: number): Promise<ITicket[] | [] | null> => {
-		const { data: tickets, error } = await supabase
-			.from('tickets')
+		const { data: tickets, error } = await supabaseRoot('tickets')
 			.select()
 			.eq('projectID', projectID);
 
@@ -14,7 +13,7 @@ export const ticketRepository = {
 		return tickets;
 	},
 	getByBoardID: async (boardID: number): Promise<any> => {
-		const { data, error } = await supabase.from('tickets').select('*').eq('boardID', boardID);
+		const { data, error } = await supabaseRoot('tickets').select('*').eq('boardID', boardID);
 		return data;
 	},
 	updateTitle: async (id: number, title: string) => {
@@ -25,7 +24,7 @@ export const ticketRepository = {
 		return data;
 	},
 	post: async (position: number, newTicket: any) => {
-		const { error } = await supabase.from('tickets').insert([
+		const { error } = await supabaseRoot('tickets').insert([
 			{
 				boardID: newTicket.id,
 				title: newTicket.title,
@@ -34,5 +33,9 @@ export const ticketRepository = {
 				projectID: newTicket.projectID
 			}
 		]);
+	},
+	delete: async (id: number) => {
+		const { error } = await supabaseRoot('tickets').delete()
+			.eq('id', id)
 	}
 };
