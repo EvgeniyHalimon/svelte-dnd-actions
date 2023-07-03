@@ -23,6 +23,15 @@ export const ticketRepository = {
 		}
 		return data;
 	},
+	updatePositions: async (tickets: any) => {
+		console.log('🚀 ~ file: kanbanBoards.ts:26 ~ update: ~ id:', tickets);
+		const { data, error } = await supabaseRoot('tickets')
+			.upsert(tickets)
+
+		if (error) {
+			return console.error(error, 'Error in updating positions for tickets');
+		}
+	},
 	post: async (position: number, newTicket: any) => {
 		const { error } = await supabaseRoot('tickets').insert([
 			{

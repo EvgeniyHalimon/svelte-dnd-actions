@@ -1,0 +1,88 @@
+<script lang="ts">
+	import { columns, kanbanBoards } from '$lib/BoardsStore';
+	import EditIcon from '$components/icons/EditIcon.svelte';
+	import DeleteIcon from '$components/icons/DeleteIcon.svelte';
+	import { kanbanBoardsRepository } from '$lib/repository/kanbanBoards';
+	import type { IKanbanBoard, ITicket } from '../routes/types';
+	import { ticketRepository } from '$lib/repository/ticketsRepository';
+
+    export let column: any;
+	export let projectID: number;
+
+	let isEditingColumnTitle = false;
+	let boardName = '';
+	let prevBoardName = '';
+
+	export const sortByPosition = (array: any) => {
+		return array.sort((a: any, b: any) => a.position - b.position);
+	};
+
+	const setUpdatedProjectBoards = async () => {
+		const data = await kanbanBoardsRepository.get(projectID);
+		kanbanBoards.set(sortByPosition(data));
+	};
+
+	const updateColumnTitle = async (id: number, newBoardName: string) => {
+		await kanbanBoardsRepository.update(id, newBoardName);
+		const updatedTickets = $columns.map((ticket: any) => {
+            if(ticket.boardName === prevBoardName){
+                return {...ticket, boardName: newBoardName}
+            }
+
+            return ticket
+		})
+	
+		columns.set(updatedTickets)
+		isEditingColumnTitle = false;
+		boardName = '';
+	};
+
+	const deleteBoard = async (id: number) => {
+		await kanbanBoardsRepository.delete(id);
+		const updatedTickets = $columns.filter((ticket: any) => ticket.id !== id);
+	
+		columns.set(updatedTickets)
+	};
+
+	const setIsEditing = (currentBoardName: string) => {
+		isEditingColumnTitle = true;
+		boardName = currentBoardName;
+		prevBoardName = currentBoardName;
+	};
+</script>
+
+<div class="flex justify-between items-baseline">
+	{#if !isEditingColumnTitle}
+		<p>{column?.boardName}</p>
+	{:else}
+		<input
+			type="text"
+			class="bg-transparent formInput h-[1.5rem] w-[11.5rem] px-0 focus:border-slate-800 border-none border-0 outline-0"
+			bind:value={boardName}
+			autofocus
+			on:blur={() => updateColumnTitle(Number(column.id), boardName)}
+		/>
+	{/if}
+	<div class="flex items-center gap-2">
+		<button
+			class="cursor-pointer h-4 hover:opacity-50 transition-all duration-200"
+			on:click={() => setIsEditing(column.boardName)}
+		>
+			<EditIcon />
+		</button>
+		<button
+			class="cursor-pointer h-4 hover:opacity-50 transition-all duration-200"
+			on:click={() => deleteBoard(Number(column?.id))}
+		>
+			<DeleteIcon />
+		</button>
+	</div>
+</div>
+
+<style>
+	.formInput:focus {
+		outline: 0;
+		border: 0;
+		box-shadow: none;
+	}
+</style>

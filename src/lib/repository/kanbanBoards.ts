@@ -11,7 +11,7 @@ export const kanbanBoardsRepository = {
 
 		return data;
 	},
-	post: async (newBoard: IKanbanBoard) => {
+	post: async (newBoard: Omit<IKanbanBoard, "id">) => {
 		const { data, error } = await supabaseRoot('kanbanBoards').insert([newBoard]);
 		if (error) {
 			return console.error(error, 'Error posting of kanbanBoards');
@@ -27,13 +27,13 @@ export const kanbanBoardsRepository = {
 			return console.error(error, 'Error updating of kanbanBoards');
 		}
 	},
-	updatePositions: async (tickets: any) => {
-		console.log('🚀 ~ file: kanbanBoards.ts:26 ~ update: ~ id:', tickets);
+	updatePositions: async (boards: any) => {
+		console.log('🚀 ~ file: kanbanBoards.ts:26 ~ update: ~ id:', boards);
 		const { data, error } = await supabaseRoot('kanbanBoards')
-			.upsert(tickets)
+			.upsert(boards)
 
 		if (error) {
-			return console.error(error, 'Error updating of kanbanBoards');
+			return console.error(error, 'Error in updating positions for kanbanBoards');
 		}
 	},
 	delete: async (id: number) => {

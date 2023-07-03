@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tickets } from '$lib/BoardsStore';
+	import { columns } from '$lib/BoardsStore';
 	import { ticketRepository } from '$lib/repository/ticketsRepository';
 	import type { ITicket } from '../routes/types';
 	import DeleteIcon from './icons/DeleteIcon.svelte';
@@ -7,6 +7,7 @@
 	import SendIcon from './icons/SendIcon.svelte';
 
 	export let ticket: ITicket;
+	export let i: number;
 	let isEditing = false;
 	let newTitle = ticket.title;
 
@@ -23,10 +24,13 @@
 
 	const deleteTicket = async (id: number) => {
 		await ticketRepository.delete(id)
-		const updatedTickets = $tickets.map((ticket: any) => {
-			return {...ticket, items: ticket.items.filter((item: any) => item.id !== id)}
+		const updatedTickets = $columns.map((ticket: any) => {
+			return {...ticket, items: ticket.items.filter((item: any) => item.id !== id).map((item: any, index: number) => {
+				return {...item,  position: index + 1}
+			})}
 		})
-		tickets.set(updatedTickets)
+		await ticketRepository.updatePositions(updatedTickets[i].items)
+		columns.set(updatedTickets)
 	}
 </script>
 

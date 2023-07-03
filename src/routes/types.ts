@@ -12,7 +12,7 @@ export interface IKanbanBoard {
 	created_at?: string;
 	projectID?: number;
 	boardName: string;
-	position?: number;
+	position: number;
 }
 
 export interface IProjects {

@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { tickets, kanbanBoards } from '$lib/BoardsStore';
+	import { columns, kanbanBoards } from '$lib/BoardsStore';
 	import { kanbanBoardsRepository } from '$lib/repository/kanbanBoards';
 	import { ticketRepository } from '$lib/repository/ticketsRepository';
 	import type { IKanbanBoard, ITicket } from '../routes/types';
+	import { transformArray } from '../utils/utils';
 	import SendIcon from './icons/SendIcon.svelte';
 	export let position: number;
 	export let data: any;
@@ -13,18 +14,8 @@
 	const addTicket = async () => {
 		await ticketRepository.post(position, { ...data, title: ticketTitle });
 		const ticketsByProjectId = (await ticketRepository.getByProjectID(data.projectID)) as ITicket[];
-		function transformArrays(boards: IKanbanBoard[], tickets: ITicket[]) {
-			const transformedBoard = boards.map((board: IKanbanBoard) => ({
-				id: board.id,
-				boardName: board.boardName,
-				projectID: board.projectID,
-				items: tickets.filter((ticket: ITicket) => ticket.boardID === board.id)
-			}));
 
-			return transformedBoard;
-		}
-
-		tickets.set(transformArrays($kanbanBoards, ticketsByProjectId));
+		columns.set(transformArray($kanbanBoards, ticketsByProjectId));
 		ticketTitle = '';
 		isPosting = !isPosting;
 	};
