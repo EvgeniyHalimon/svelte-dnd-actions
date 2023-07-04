@@ -1,8 +1,8 @@
-import type { ITicket } from '../../routes/types.js';
+import type { INewTicket } from '../../routes/types.js';
 import { supabase, supabaseRoot } from '../../supabase';
 
 export const ticketRepository = {
-	getByProjectID: async (projectID: number): Promise<ITicket[] | [] | null> => {
+	getByProjectID: async (projectID: number) => {
 		const { data: tickets, error } = await supabaseRoot('tickets')
 			.select()
 			.eq('projectID', projectID);
@@ -12,27 +12,35 @@ export const ticketRepository = {
 		}
 		return tickets;
 	},
-	getByBoardID: async (boardID: number): Promise<any> => {
+	getByBoardID: async (boardID: number) => {
 		const { data, error } = await supabaseRoot('tickets').select('*').eq('boardID', boardID);
+		if (error) {
+			console.error(error, 'Error loading of tickets by board ID');
+		}
 		return data;
 	},
 	updateTitle: async (id: number, title: string) => {
 		const { data, error } = await supabase.from('tickets').update({ title: title }).eq('id', id);
 		if (error) {
-			console.error(error, 'Error loading of tickets');
+			console.error(error, 'Error updating of title');
 		}
 		return data;
 	},
-	updatePositions: async (tickets: any) => {
-		console.log('🚀 ~ file: kanbanBoards.ts:26 ~ update: ~ id:', tickets);
-		const { data, error } = await supabaseRoot('tickets')
-			.upsert(tickets)
+	updateDescription: async (id: number, description: string) => {
+		const { data, error } = await supabase.from('tickets').update({ description: description }).eq('id', id);
+		if (error) {
+			console.error(error, 'Error updating of description');
+		}
+		return data;
+	},
+	updatePositions: async (tickets: {id: number, position: number}[]) => {
+		const { error } = await supabaseRoot('tickets').upsert(tickets);
 
 		if (error) {
 			return console.error(error, 'Error in updating positions for tickets');
 		}
 	},
-	post: async (position: number, newTicket: any) => {
+	post: async (position: number, newTicket: INewTicket) => {
 		const { error } = await supabaseRoot('tickets').insert([
 			{
 				boardID: newTicket.id,
@@ -44,7 +52,6 @@ export const ticketRepository = {
 		]);
 	},
 	delete: async (id: number) => {
-		const { error } = await supabaseRoot('tickets').delete()
-			.eq('id', id)
+		const { error } = await supabaseRoot('tickets').delete().eq('id', id);
 	}
 };

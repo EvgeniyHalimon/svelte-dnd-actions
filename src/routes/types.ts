@@ -1,6 +1,6 @@
 export interface ITicket {
 	id?: number;
-	created_at?: string;
+	created_at: string;
 	boardID?: number;
 	title: string;
 	description: string;
@@ -10,15 +10,25 @@ export interface ITicket {
 export interface IKanbanBoard {
 	id: number;
 	created_at?: string;
-	projectID?: number;
+	projectID: number;
 	boardName: string;
 	position: number;
 }
 
 export interface IProjects {
 	id?: number;
-	created_at?: any;
+	created_at?: string;
 	projectName: string;
 }
 
-export type TransformedTicketArray = Record<string, ITicket[]>
+export interface IColumns{
+	id: number,
+	boardName: string,
+	projectID: number,
+	position: number ,
+	items: ITicket[]
+}
+
+export interface INewTicket extends IColumns {
+	title: string
+}

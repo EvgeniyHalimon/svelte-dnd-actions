@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { columns, kanbanBoards, tickets } from '$lib/BoardsStore';
-	import { kanbanBoardsRepository } from '$lib/repository/kanbanBoards.js';
+	import { kanbanBoardsRepository } from '$lib/repository/kanbanBoardsRepository.js';
 	import type { IKanbanBoard } from '../routes/types';
 	import { transformArray } from '../utils/utils';
 	import SendIcon from './icons/SendIcon.svelte';
@@ -17,9 +17,9 @@
 		});
 		boardName = '';
 		isEditing = false;
-		const boards = await kanbanBoardsRepository.get(projectID) as IKanbanBoard[]
+		const boards = (await kanbanBoardsRepository.get(projectID)) as IKanbanBoard[];
 		kanbanBoards.set(boards);
-		columns.set(transformArray(boards, $tickets))
+		columns.set(transformArray(boards, $tickets));
 	};
 
 	const addBoard = async (e: KeyboardEvent) => {

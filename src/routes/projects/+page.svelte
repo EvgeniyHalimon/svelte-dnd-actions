@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { projects } from '$lib/BoardsStore';
 	import { vocab } from '../vocab';
-	import Projects from '$components/Projects.svelte'
+	import Projects from '$components/Projects.svelte';
 	import AddProject from '$components/AddButton.svelte';
 	import { projectRepository } from '$lib/repository/projectsRepository';
 

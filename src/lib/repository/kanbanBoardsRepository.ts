@@ -1,5 +1,5 @@
 import type { IKanbanBoard } from '../../routes/types.js';
-import { supabase, supabaseRoot } from '../../supabase.js';
+import { supabaseRoot } from '../../supabase.js';
 
 export const kanbanBoardsRepository = {
 	get: async (id: number) => {
@@ -11,7 +11,7 @@ export const kanbanBoardsRepository = {
 
 		return data;
 	},
-	post: async (newBoard: Omit<IKanbanBoard, "id">) => {
+	post: async (newBoard: Omit<IKanbanBoard, 'id'>) => {
 		const { data, error } = await supabaseRoot('kanbanBoards').insert([newBoard]);
 		if (error) {
 			return console.error(error, 'Error posting of kanbanBoards');
@@ -29,8 +29,7 @@ export const kanbanBoardsRepository = {
 	},
 	updatePositions: async (boards: any) => {
 		console.log('🚀 ~ file: kanbanBoards.ts:26 ~ update: ~ id:', boards);
-		const { data, error } = await supabaseRoot('kanbanBoards')
-			.upsert(boards)
+		const { error } = await supabaseRoot('kanbanBoards').upsert(boards);
 
 		if (error) {
 			return console.error(error, 'Error in updating positions for kanbanBoards');

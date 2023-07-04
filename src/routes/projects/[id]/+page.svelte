@@ -6,17 +6,17 @@
 	import { flip } from 'svelte/animate';
 	import Column from '$components/Column.svelte';
 	import { ticketRepository } from '$lib/repository/ticketsRepository.js';
-	import type { IKanbanBoard, ITicket } from '../../types';
+	import type { ITicket } from '../../types';
 	import { onMount } from 'svelte';
 	import { dndzone } from 'svelte-dnd-action';
-	import { kanbanBoardsRepository } from '$lib/repository/kanbanBoards';
+	import { kanbanBoardsRepository } from '$lib/repository/kanbanBoardsRepository';
 	import { transformArray } from '../../../utils/utils';
 
-	export let data;
+	export let data; //data from ssr
 	let isEditing = false;
 	let isLoading = true;
-	kanbanBoards.set(data.kanbanBoards);
 	let projectID = Number($page.params.id);
+	kanbanBoards.set(data.kanbanBoards);
 
 	const flipDurationMs = 200;
 
@@ -26,7 +26,7 @@
 
 	onMount(async () => {
 		const data = (await ticketRepository.getByProjectID(projectID)) as ITicket[];
-		tickets.set(data)
+		tickets.set(data);
 		columns.set(transformArray($kanbanBoards, data));
 		isLoading = false;
 	});
@@ -61,7 +61,7 @@
 				class="h-full w-64 min-w-[16rem] rounded-md bg-gray-800 p-3"
 				animate:flip={{ duration: flipDurationMs }}
 			>
-				<Column {column} {projectID} {flipDurationMs} {i}/>
+				<Column {column} {projectID} {flipDurationMs} {i} />
 			</div>
 		{/each}
 		{#if isEditing}

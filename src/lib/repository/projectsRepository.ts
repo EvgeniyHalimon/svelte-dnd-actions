@@ -1,5 +1,5 @@
 import type { IProjects } from '../../routes/types.js';
-import { supabase, supabaseRoot } from '../../supabase';
+import { supabaseRoot } from '../../supabase';
 
 export const projectRepository = {
 	get: async (): Promise<IProjects[] | []> => {

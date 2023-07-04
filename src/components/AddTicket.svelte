@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { columns, kanbanBoards } from '$lib/BoardsStore';
-	import { kanbanBoardsRepository } from '$lib/repository/kanbanBoards';
 	import { ticketRepository } from '$lib/repository/ticketsRepository';
-	import type { IKanbanBoard, ITicket } from '../routes/types';
+	import type { IColumns, ITicket } from '../routes/types';
 	import { transformArray } from '../utils/utils';
 	import SendIcon from './icons/SendIcon.svelte';
 	export let position: number;
-	export let data: any;
+	export let data: IColumns;
 	export let i: number;
 
 	let ticketTitle: string;

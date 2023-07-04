@@ -1,20 +1,16 @@
 <script lang="ts">
-	import { kanbanBoards, columns } from '$lib/BoardsStore';
+	import { columns } from '$lib/BoardsStore';
 	import Ticket from '$components/Ticket.svelte';
 	import AddTicket from '$components/AddTicket.svelte';
 	import ColumnTitle from '$components/ColumnTitle.svelte';
 	import { dndzone } from 'svelte-dnd-action';
-	import type { IKanbanBoard, ITicket } from '../routes/types';
+	import type { IColumns, ITicket } from '../routes/types';
 	import { ticketRepository } from '$lib/repository/ticketsRepository';
 
-    export let column: any
+	export let column: IColumns;
 	export let projectID: number;
 	export let flipDurationMs: number;
 	export let i: number;
-
-	export const sortByPosition = (array: any) => {
-		return array.sort((a: any, b: any) => a.position - b.position);
-	};
 
 	function getNextPosition(array: ITicket[], boardID: number) {
 		const data = array.filter((column) => column.boardID == boardID);
@@ -22,13 +18,13 @@
 	}
 
 	function handleDndConsiderCards(columnId: number, e: any) {
-		const colIdx = $columns.findIndex((c: ITicket) => c.id === columnId);
+		const colIdx = $columns.findIndex((c: IColumns) => c.id === columnId);
 		$columns[colIdx].items = e.detail.items;
 		$columns = [...$columns];
 	}
 
 	async function handleDndFinalizeCards(columnId: number, e: any) {
-		const colIdx = $columns.findIndex((c: ITicket) => c.id === columnId);
+		const colIdx = $columns.findIndex((c: IColumns) => c.id === columnId);
 		const updatedTicketsPositions = e.detail.items.map((item: ITicket, i: number) => {
 			return { ...item, boardID: $columns[colIdx].id, position: i + 1 };
 		});

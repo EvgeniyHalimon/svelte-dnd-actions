@@ -1,47 +1,37 @@
 <script lang="ts">
-	import { columns, kanbanBoards } from '$lib/BoardsStore';
+	import { columns } from '$lib/BoardsStore';
 	import EditIcon from '$components/icons/EditIcon.svelte';
 	import DeleteIcon from '$components/icons/DeleteIcon.svelte';
-	import { kanbanBoardsRepository } from '$lib/repository/kanbanBoards';
-	import type { IKanbanBoard, ITicket } from '../routes/types';
-	import { ticketRepository } from '$lib/repository/ticketsRepository';
+	import { kanbanBoardsRepository } from '$lib/repository/kanbanBoardsRepository';
+	import type { IColumns } from '../routes/types';
 
-    export let column: any;
+	export let column: IColumns;
 	export let projectID: number;
 
 	let isEditingColumnTitle = false;
 	let boardName = '';
 	let prevBoardName = '';
 
-	export const sortByPosition = (array: any) => {
-		return array.sort((a: any, b: any) => a.position - b.position);
-	};
-
-	const setUpdatedProjectBoards = async () => {
-		const data = await kanbanBoardsRepository.get(projectID);
-		kanbanBoards.set(sortByPosition(data));
-	};
-
 	const updateColumnTitle = async (id: number, newBoardName: string) => {
 		await kanbanBoardsRepository.update(id, newBoardName);
-		const updatedTickets = $columns.map((ticket: any) => {
-            if(ticket.boardName === prevBoardName){
-                return {...ticket, boardName: newBoardName}
-            }
+		const updatedTickets = $columns.map((ticket: IColumns) => {
+			if (ticket.boardName === prevBoardName) {
+				return { ...ticket, boardName: newBoardName };
+			}
 
-            return ticket
-		})
-	
-		columns.set(updatedTickets)
+			return ticket;
+		});
+
+		columns.set(updatedTickets);
 		isEditingColumnTitle = false;
 		boardName = '';
 	};
 
 	const deleteBoard = async (id: number) => {
 		await kanbanBoardsRepository.delete(id);
-		const updatedTickets = $columns.filter((ticket: any) => ticket.id !== id);
-	
-		columns.set(updatedTickets)
+		const updatedTickets = $columns.filter((ticket: IColumns) => ticket.id !== id);
+
+		columns.set(updatedTickets);
 	};
 
 	const setIsEditing = (currentBoardName: string) => {
