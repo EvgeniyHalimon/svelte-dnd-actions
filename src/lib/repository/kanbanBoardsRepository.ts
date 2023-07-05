@@ -18,7 +18,6 @@ export const kanbanBoardsRepository = {
 		}
 	},
 	update: async (id: number, newBoardName: string) => {
-		console.log('🚀 ~ file: kanbanBoards.ts:26 ~ update: ~ id:', id, newBoardName);
 		const { data, error } = await supabaseRoot('kanbanBoards')
 			.update({ boardName: newBoardName })
 			.eq('id', id);
@@ -28,7 +27,6 @@ export const kanbanBoardsRepository = {
 		}
 	},
 	updatePositions: async (boards: any) => {
-		console.log('🚀 ~ file: kanbanBoards.ts:26 ~ update: ~ id:', boards);
 		const { error } = await supabaseRoot('kanbanBoards').upsert(boards);
 
 		if (error) {

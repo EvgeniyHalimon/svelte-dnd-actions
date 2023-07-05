@@ -29,6 +29,13 @@ export interface IColumns{
 	items: ITicket[]
 }
 
+export interface IComments{
+	id: number;
+	created_at: string;
+	ticketID: number;
+	comment: string;
+}
+
 export interface INewTicket extends IColumns {
 	title: string
 }

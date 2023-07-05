@@ -2,6 +2,7 @@
     import { kanbanBoards } from '$lib/BoardsStore';
     import Description from '$components/ModalDescription.svelte';
     import Title from '$components/ModalTitle.svelte';
+    import Comments from '$components/ModalComments.svelte';
 	import type { IKanbanBoard, ITicket } from '../routes/types';
 	import { getDate } from '../utils/utils';
 
@@ -15,9 +16,6 @@
     <p class="text-white text-xs mb-3">In column {columnName}</p>
     <Description description={ticket.description} id={Number(ticket.id)}/>
     <p class="text-white text-sm text-right">Created : {getDate(ticket.created_at)}</p>
-    <p class="text-white text-lg mb-3">Actions</p>
-    <div class="flex justify-between">
-        <input type="text" placeholder="Out of order" class="text-white bg-slate-900 border-none border-0 rounded-md w-[85%]">
-        <button class="text-white rounded-md bg-sky-700 w-20 hover:bg-sky-600 transition-all duration-300">Send</button>
-    </div>
+    <p class="text-white text-lg mb-3">Add comment</p>
+    <Comments ticketID={Number(ticket.id)}/>
 </div>

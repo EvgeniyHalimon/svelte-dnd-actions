@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { kanbanBoards, columns, tickets } from '$lib/BoardsStore';
+	import { kanbanBoards, columns, tickets, projects } from '$lib/BoardsStore';
 	import AddKanbanBoard from '$components/AddButton.svelte';
 	import PostKanbanBoard from '$components/PostKanbanBoard.svelte';
 	import { flip } from 'svelte/animate';
@@ -16,6 +16,7 @@
 	let isEditing = false;
 	let isLoading = true;
 	let projectID = Number($page.params.id);
+	let projectName = $projects.find(project => project.id === projectID)?.projectName;
 	kanbanBoards.set(data.kanbanBoards);
 
 	const flipDurationMs = 200;
@@ -45,7 +46,7 @@
 </script>
 
 <svelte:head>
-	<title>{projectID}</title>
+	<title>{projectName}</title>
 </svelte:head>
 
 <h1 class="pb-4">There will be kanban board {projectID}</h1>

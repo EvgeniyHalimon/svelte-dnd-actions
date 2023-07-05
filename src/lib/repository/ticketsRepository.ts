@@ -1,5 +1,5 @@
 import type { INewTicket } from '../../routes/types.js';
-import { supabase, supabaseRoot } from '../../supabase';
+import { supabaseRoot } from '../../supabase';
 
 export const ticketRepository = {
 	getByProjectID: async (projectID: number) => {
@@ -20,14 +20,14 @@ export const ticketRepository = {
 		return data;
 	},
 	updateTitle: async (id: number, title: string) => {
-		const { data, error } = await supabase.from('tickets').update({ title: title }).eq('id', id);
+		const { data, error } = await supabaseRoot('tickets').update({ title: title }).eq('id', id);
 		if (error) {
 			console.error(error, 'Error updating of title');
 		}
 		return data;
 	},
 	updateDescription: async (id: number, description: string) => {
-		const { data, error } = await supabase.from('tickets').update({ description: description }).eq('id', id);
+		const { data, error } = await supabaseRoot('tickets').update({ description: description }).eq('id', id);
 		if (error) {
 			console.error(error, 'Error updating of description');
 		}

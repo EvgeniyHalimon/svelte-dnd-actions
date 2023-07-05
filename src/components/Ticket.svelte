@@ -1,12 +1,13 @@
 <script lang="ts">
-	import { columns } from '$lib/BoardsStore';
+	import { columns, comments } from '$lib/BoardsStore';
 	import { ticketRepository } from '$lib/repository/ticketsRepository';
-	import type { IColumns, ITicket } from '../routes/types';
+	import type { IColumns, IComments, ITicket } from '../routes/types';
 	import DeleteIcon from './icons/DeleteIcon.svelte';
 	import EditIcon from './icons/EditIcon.svelte';
 	import SendIcon from './icons/SendIcon.svelte';
 	import TicketModal from '$components/TicketModal.svelte';
 	import ModalContent from '$components/ModalContent.svelte';
+	import { commentsRepository } from '$lib/repository/commentsRepository';
 
 	export let ticket: ITicket;
 	export let i: number;
@@ -49,6 +50,12 @@
 		await ticketRepository.updatePositions(updatedTickets[i].items);
 		columns.set(updatedTickets);
 	};
+
+	const loadComments = async () => {
+		const commentsData = (await commentsRepository.getByTicketID(Number(ticket.id)))?.sort((a: IComments, b: IComments) => b.created_at.localeCompare(a.created_at)) as IComments[];
+		comments.set(commentsData);
+		showModal = true
+	}
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -59,7 +66,7 @@
 	on:mouseleave={toggleVisibility}
 >
 	{#if !isEditing}
-		<p class="w-full" on:click={() => (showModal = true)}>
+		<p class="w-full" on:click={loadComments}>
 			{newTitle}
 		</p>
 		<TicketModal bind:showModal>
@@ -99,8 +106,6 @@
 		</button>
 	{/if}
 </div>
-
-
 
 <style>
 	.formInput:focus {
