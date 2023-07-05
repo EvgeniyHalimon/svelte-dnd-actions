@@ -1,17 +1,41 @@
-export interface ListItem {
-    id: number,
-    title: string,
-    description: string,
+export interface ITicket {
+	id?: number;
+	created_at: string;
+	boardID?: number;
+	title: string;
+	description: string;
+	position: number;
 }
 
-export interface IKanbanBoard{
-    id: number,
-    boardName: string,
-    tickets: ListItem[],
+export interface IKanbanBoard {
+	id: number;
+	created_at?: string;
+	projectID: number;
+	boardName: string;
+	position: number;
 }
 
-export interface IBoards{
-    boardId: number,
-    boardName: string,
-    kanbanBoards: IKanbanBoard[]
+export interface IProjects {
+	id?: number;
+	created_at?: string;
+	projectName: string;
+}
+
+export interface IColumns{
+	id: number,
+	boardName: string,
+	projectID: number,
+	position: number ,
+	items: ITicket[]
+}
+
+export interface IComments{
+	id: number;
+	created_at: string;
+	ticketID: number;
+	comment: string;
+}
+
+export interface INewTicket extends IColumns {
+	title: string
 }

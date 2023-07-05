@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { IProjects } from '../routes/types';
+	import { projects } from '$lib/BoardsStore';
 	import { goto } from '$app/navigation';
 
 	export let project: IProjects;
@@ -56,6 +57,8 @@
 {:else}
 	
 	
+{/if} -->
+
 <style>
 	.formInput:focus {
 		outline: 0;
@@ -63,5 +66,3 @@
 		box-shadow: none;
 	}
 </style>
-{/if} -->
-
