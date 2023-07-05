@@ -1,15 +1,18 @@
 <script lang="ts">
 	import { columns } from '$lib/BoardsStore';
 	import { ticketRepository } from '$lib/repository/ticketsRepository';
-	import type { ITicket } from '../routes/types';
+	import type { IColumns, ITicket } from '../routes/types';
 	import DeleteIcon from './icons/DeleteIcon.svelte';
 	import EditIcon from './icons/EditIcon.svelte';
 	import SendIcon from './icons/SendIcon.svelte';
+	import TicketModal from '$components/TicketModal.svelte';
+	import ModalContent from '$components/ModalContent.svelte';
 
 	export let ticket: ITicket;
 	export let i: number;
 	let isEditing = false;
 	let newTitle = ticket.title;
+	let showModal = false;
 
 	let isVisible = false;
 
@@ -19,31 +22,49 @@
 
 	const updateTitle = async (id: number) => {
 		await ticketRepository.updateTitle(id, newTitle);
+		const updatedColumns = $columns.map((column: IColumns) => {
+			return {...column, items: column.items.map((ticket: ITicket) => {
+                if(ticket.id === id){
+                    return {...ticket, title: newTitle}
+                }
+                return ticket;
+            })}
+		});
+        columns.set(updatedColumns)
 		isEditing = false;
 	};
 
 	const deleteTicket = async (id: number) => {
-		await ticketRepository.delete(id)
-		const updatedTickets = $columns.map((ticket: any) => {
-			return {...ticket, items: ticket.items.filter((item: any) => item.id !== id).map((item: any, index: number) => {
-				return {...item,  position: index + 1}
-			})}
-		})
-		await ticketRepository.updatePositions(updatedTickets[i].items)
-		columns.set(updatedTickets)
-	}
+		await ticketRepository.delete(id);
+		const updatedTickets = $columns.map((ticket: IColumns) => {
+			return {
+				...ticket,
+				items: ticket.items
+					.filter((item: any) => item.id !== id)
+					.map((item: any, index: number) => {
+						return { ...item, position: index + 1 };
+					})
+			};
+		});
+		await ticketRepository.updatePositions(updatedTickets[i].items);
+		columns.set(updatedTickets);
+	};
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
 	class="flex justify-between items-center bg-slate-600 rounded-md min-w-[14rem] h-full break-words p-2 mt-3 hover:bg-slate-500 translate-all duration-300"
 	on:mouseenter={toggleVisibility}
 	on:mouseleave={toggleVisibility}
 >
 	{#if !isEditing}
-		<p>
+		<p class="w-full" on:click={() => (showModal = true)}>
 			{newTitle}
 		</p>
+		<TicketModal bind:showModal>
+			<ModalContent {ticket}/>
+		</TicketModal>
 	{:else}
 		<!-- svelte-ignore a11y-autofocus -->
 		<input
@@ -65,7 +86,10 @@
 			>
 				<EditIcon />
 			</button>
-			<button class="h-4 w-4 text-sm hover:opacity-50 transition-all duration-200" on:click={() => deleteTicket(Number(ticket.id))}>
+			<button
+				class="h-4 w-4 text-sm hover:opacity-50 transition-all duration-200"
+				on:click={() => deleteTicket(Number(ticket.id))}
+			>
 				<DeleteIcon />
 			</button>
 		</div>
@@ -75,6 +99,8 @@
 		</button>
 	{/if}
 </div>
+
+
 
 <style>
 	.formInput:focus {
