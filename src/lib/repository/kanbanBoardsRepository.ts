@@ -1,5 +1,7 @@
 import type { IKanbanBoard } from '../../routes/types.js';
 import { supabaseRoot } from '../../supabase.js';
+import { commentsRepository } from './commentsRepository.js';
+import { ticketRepository } from './ticketsRepository.js';
 
 export const kanbanBoardsRepository = {
 	get: async (id: number) => {
@@ -34,10 +36,18 @@ export const kanbanBoardsRepository = {
 		}
 	},
 	delete: async (id: number) => {
+		await commentsRepository.deleteByBoardID(id)
+		await ticketRepository.deleteByBoardID(id)
 		const { error } = await supabaseRoot('kanbanBoards').delete().eq('id', id);
-
 		if (error) {
 			return console.error(error, 'Error deleting of kanbanBoards');
+		}
+	},
+	deleteByProjectID: async (projectID: number) => {
+		const { error } = await supabaseRoot('kanbanBoards').delete().eq('projectID', projectID);
+
+		if (error) {
+			return console.error(error, 'Error deleting of kanbanBoards by projectsID');
 		}
 	}
 };

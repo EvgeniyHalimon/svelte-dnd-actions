@@ -49,7 +49,7 @@
 	<title>{projectName}</title>
 </svelte:head>
 
-<h1 class="pb-4">There will be kanban board {projectID}</h1>
+<h1 class="pb-4 text-xl">{projectName}</h1>
 {#if !isLoading}
 	<section
 		class="flex gap-10 min-w-full"

@@ -1,7 +1,8 @@
 export interface ITicket {
-	id?: number;
+	id: number;
 	created_at: string;
-	boardID?: number;
+	boardID: number;
+	projectID: number;
 	title: string;
 	description: string;
 	position: number;
@@ -16,7 +17,7 @@ export interface IKanbanBoard {
 }
 
 export interface IProjects {
-	id?: number;
+	id: number;
 	created_at?: string;
 	projectName: string;
 }
@@ -33,6 +34,8 @@ export interface IComments{
 	id: number;
 	created_at: string;
 	ticketID: number;
+	boardID: number;
+	projectID: number;
 	comment: string;
 }
 

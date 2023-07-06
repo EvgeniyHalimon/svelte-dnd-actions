@@ -42,7 +42,7 @@
 		<textarea
 			bind:value={newDescription}
 			autofocus
-			class="w-full border-0 h-32 bg-slate-900 text-white resize-none rounded-md"
+			class="w-full border-0 h-32 bg-slate-900 text-white resize-none rounded-md mb-2"
 		/>
 		<div>
 			<button

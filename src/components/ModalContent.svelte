@@ -17,5 +17,5 @@
     <Description description={ticket.description} id={Number(ticket.id)}/>
     <p class="text-white text-sm text-right">Created : {getDate(ticket.created_at)}</p>
     <p class="text-white text-lg mb-3">Add comment</p>
-    <Comments ticketID={Number(ticket.id)}/>
+    <Comments {ticket}/>
 </div>

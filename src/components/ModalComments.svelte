@@ -2,14 +2,14 @@
 	import { comments } from '$lib/BoardsStore';
 	import { commentsRepository } from '$lib/repository/commentsRepository';
 	import Comment from '$components/Comment.svelte';
-	import type { IComments } from '../routes/types';
+	import type { IComments, ITicket } from '../routes/types';
 
-	export let ticketID: number;
+	export let ticket: ITicket;
 	let newComment = '';
 
 	const addComment = async () => {
-		await commentsRepository.post(ticketID, newComment);
-		const newComments = (await commentsRepository.getByTicketID(ticketID))?.sort((a: IComments, b: IComments) => b.created_at.localeCompare(a.created_at)) as IComments[];
+		await commentsRepository.post(ticket, newComment);
+		const newComments = (await commentsRepository.getByTicketID(ticket.id))?.sort((a: IComments, b: IComments) => b.created_at.localeCompare(a.created_at)) as IComments[];
 		comments.set(newComments)
 		newComment = '';
 	};

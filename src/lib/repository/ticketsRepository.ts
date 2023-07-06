@@ -1,5 +1,6 @@
 import type { INewTicket } from '../../routes/types.js';
 import { supabaseRoot } from '../../supabase';
+import { commentsRepository } from './commentsRepository.js';
 
 export const ticketRepository = {
 	getByProjectID: async (projectID: number) => {
@@ -52,6 +53,22 @@ export const ticketRepository = {
 		]);
 	},
 	delete: async (id: number) => {
+		await commentsRepository.deleteByTicketID(id)
 		const { error } = await supabaseRoot('tickets').delete().eq('id', id);
+		if (error) {
+			return console.error(error, 'Error in deleting ticket by id');
+		}
+	},
+	deleteByBoardID: async (boardID: number) => {
+		const { error } = await supabaseRoot('tickets').delete().eq('boardID', boardID);
+		if (error) {
+			return console.error(error, 'Error in deleting ticket by boardID');
+		}
+	},
+	deleteByProjectID: async (projectID: number) => {
+		const { error } = await supabaseRoot('tickets').delete().eq('projectID', projectID);
+		if (error) {
+			return console.error(error, 'Error in deleting ticket by projectID');
+		}
 	}
 };

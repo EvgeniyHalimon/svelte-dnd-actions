@@ -30,7 +30,7 @@
 
 	const deleteBoard = async (id: number) => {
 		await kanbanBoardsRepository.delete(id);
-		const updatedTickets = $columns.filter((ticket: IColumns) => ticket.id !== id);
+		const updatedTickets = $columns.filter((column: IColumns) => column.id !== id);
 
 		columns.set(updatedTickets);
 	};
