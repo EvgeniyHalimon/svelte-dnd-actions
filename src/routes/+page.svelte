@@ -5,8 +5,10 @@
 	import '@skeletonlabs/skeleton/styles/skeleton.css';
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 </script>
 
 <h1>There will be dashboard</h1>
-
-<a href="/projects">Projects</a>
+<a href="/projects" class="mb-3">Move along to see all Projects</a>
