@@ -6,6 +6,19 @@
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
 	import 'iconify-icon';
+	import { onMount } from 'svelte';
+	import { supabase } from '../supabase';
+	import { invalidateAll } from '$app/navigation';
+
+	onMount(() => {
+		const { data : { subscription }} = supabase.auth.onAuthStateChange(() => {
+			invalidateAll
+		})
+
+		return () => {
+			subscription.unsubscribe()
+		}
+	})
 </script>
 
 <div class="p-8 w-screen">
