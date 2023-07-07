@@ -19,7 +19,7 @@
 	let projectName = $projects.find(project => project.id === projectID)?.projectName;
 	kanbanBoards.set(data.kanbanBoards);
 
-	const flipDurationMs = 200;
+	const flipDurationMs = 300;
 
 	const add = () => {
 		isEditing = true;
@@ -62,7 +62,7 @@
 				class="h-full w-64 min-w-[16rem] rounded-md bg-gray-800 p-3"
 				animate:flip={{ duration: flipDurationMs }}
 			>
-				<Column {column} {projectID} {flipDurationMs} {i} />
+				<Column {column} {projectID} {i} />
 			</div>
 		{/each}
 		{#if isEditing}

@@ -8,6 +8,7 @@
 	import TicketModal from '$components/TicketModal.svelte';
 	import ModalContent from '$components/ModalContent.svelte';
 	import { commentsRepository } from '$lib/repository/commentsRepository';
+	import { flip } from 'svelte/animate';
 
 	export let ticket: ITicket;
 	export let i: number;

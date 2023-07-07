@@ -23,7 +23,7 @@ export const projectRepository = {
 			return console.error(error, 'Error of delete project');
 		}
 	},
-	post: async (data: IProjects) => {
+	post: async (data: Omit<IProjects, 'id'>) => {
 		const { error } = await supabaseRoot('projects').insert([data]);
 
 		if (error) {
