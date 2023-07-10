@@ -9,24 +9,28 @@ export const actions: Actions = {
 		const { data, error: err } = await locals.supabase.auth.signUp({
 			email: body.email as string,
 			password: body.password as string,
-            options: {
-                data: {
-                    username: body.username as string,
-                }
-            }
+			options: {
+				data: {
+					username: body.username as string,
+				}
+			}
 		})
 
+		if (data?.user?.identities?.length === 0) {
+			throw redirect(303, "/exist")
+		}
 		if (err) {
 			if (err instanceof AuthApiError && err.status === 400) {
-				return fail(400, {
-					error: "Invalid email or password",
+				return fail(err.status, {
+					error: err.message,
 				})
 			}
 			return fail(500, {
-				error: "Server error. Please try again later.",
+				error: err.message,
 			})
+		} else {
+			throw redirect(303, "/confirm")
 		}
 
-		throw redirect(303, "/")
 	},
 }

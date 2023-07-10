@@ -6,7 +6,6 @@
 </script>
 
 <main>
-	<h1>Login</h1>
 	<form action="?/login" method="POST" class="flex flex-col gap-3 m-auto w-72 p-3 border-sky-200 border-2 rounded-sm">
 		<label for="email">Email</label>
 		<input

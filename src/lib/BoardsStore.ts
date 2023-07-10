@@ -15,3 +15,4 @@ export const kanbanBoards = writable<IKanbanBoard[] | any>([]);
 export const columns = writable<IColumns[] | []>([]);
 export const tickets = writable<ITicket[] | []>([]);
 export const comments = writable<IComments[] | []>([]);
+export const userID = writable<string>('');

@@ -8,9 +8,9 @@
 	import 'iconify-icon';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { userID } from '$lib/BoardsStore';
 
 	export let data;
-	console.log('🚀 ~ file: +layout.svelte:13 ~ data:', data);
 
 	let { supabase, session } = data;
 	$: ({ supabase, session } = data);
@@ -23,6 +23,11 @@
 				invalidate('supabase:auth');
 			}
 		});
+
+		if(session?.user.id){
+			userID.set(session.user.id);
+			console.log("🚀 ~ file: +layout.svelte:30 ~ onMount ~ userID:", $userID)
+		}
 
 		return () => subscription.unsubscribe();
 	});

@@ -6,19 +6,6 @@
 	let email: string;
 	let password: string;
 	let username: string;
-
-	
-
-	const handleSignIn = async () => {
-		await supabase.auth.signInWithPassword({
-			email,
-			password
-		});
-	};
-
-	const handleSignOut = async () => {
-		await supabase.auth.signOut();
-	};
 </script>
 
 <h1>Register</h1>
@@ -47,6 +34,3 @@
 	/>
 	<button type="submit" class="p-2 rounded-md self-end bg-blue-600">Sign up</button>
 </form>
-
-<button on:click={handleSignIn}>Sign in</button>
-<button on:click={handleSignOut}>Sign out</button>
