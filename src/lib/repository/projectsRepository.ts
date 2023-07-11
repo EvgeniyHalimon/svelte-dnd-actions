@@ -15,9 +15,7 @@ export const projectRepository = {
 		return data || [];
 	},
 	getByUserID: async (userID: string) => {
-		console.log("🚀 ~ file: projectsRepository.ts:18 ~ getByUserID: ~ userID:", userID)
 		const { data, error } = await supabaseRoot('projects').select().eq('userID', userID);
-		console.log("🚀 ~ file: projectsRepository.ts:19 ~ getByUserID: ~ data:", data)
 
 		if (error) {
 			console.error(error, 'Error loading of projects');

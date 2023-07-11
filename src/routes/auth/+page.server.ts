@@ -33,3 +33,9 @@ export const actions: Actions = {
 		}
 	}
 };
+
+export async function load({ locals }) {
+	if (await locals.getSession() !== null) {
+		throw redirect(302, "/dashboard")
+	}
+}

@@ -6,9 +6,10 @@
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
 	import 'iconify-icon';
-	import { invalidate } from '$app/navigation';
+	import { goto, invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { userID } from '$lib/BoardsStore';
+	import { fade, fly } from 'svelte/transition';
 
 	export let data;
 
@@ -26,7 +27,6 @@
 
 		if (session?.user.id) {
 			userID.set(session.user.id);
-			console.log('🚀 ~ file: +layout.svelte:30 ~ onMount ~ userID:', $userID);
 		}
 
 		return () => subscription.unsubscribe();
@@ -37,14 +37,19 @@
 		if (error) {
 			console.log(error);
 		}
+		goto('/')
 	};
 </script>
 
 <div class="p-8 w-screen">
-	<nav class="pb-10 flex justify-between">
+	<nav class="pb-10 flex justify-between items-center">
 		<div class="flex gap-3">
-			<a href="/" class="font-semibold text-3xl mr-6">Dashboard</a>
-			<a href="/projects" class="font-semibold text-3xl">Projects</a>
+			{#if $userID}
+				<a href="/dashboard" class="font-semibold text-3xl mr-6">Dashboard</a>
+				<a href="/projects" class="font-semibold text-3xl">Projects</a>
+				{:else}
+				<h1 class="text-3xl">Easy kanban boards</h1>
+			{/if}
 		</div>
 		{#if data.session}
 			<form action="/logout" method="POST" on:submit={submitLogout}>
@@ -59,7 +64,7 @@
 	</nav>
 
 	{#if data.session}
-		<p>Welcome, {data.session.user.user_metadata.username}</p>
+		<p class="mb-4">Welcome, {data.session.user.user_metadata.username}</p>
 	{/if}
 
 	<slot />

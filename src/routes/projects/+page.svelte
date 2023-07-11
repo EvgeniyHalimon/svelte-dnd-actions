@@ -5,6 +5,7 @@
 	import AddProject from '$components/AddButton.svelte';
 	import { projectRepository } from '$lib/repository/projectsRepository';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	const add = async () => {
 		/* $projects = [
@@ -23,9 +24,8 @@
 	onMount(async () => {
 		if ($userID) {
 			const data = await projectRepository.getByUserID($userID);
-			console.log('🚀 ~ file: +page.svelte:24 ~ onMount ~ data:', data);
 			projects.set(data);
-		}
+		} 
 	});
 </script>
 

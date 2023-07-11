@@ -1,4 +1,8 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { userID } from '$lib/BoardsStore.js';
+	import { onMount } from 'svelte';
+
 	export let data;
 	let { supabase } = data;
 	$: ({ supabase } = data);
@@ -8,7 +12,6 @@
 	let username: string;
 </script>
 
-<h1>Register</h1>
 <form
 	action="?/register"
 	method="POST"
