@@ -14,10 +14,18 @@ export const projectRepository = {
 
 		return data || [];
 	},
+	getByUserID: async (userID: string) => {
+		const { data, error } = await supabaseRoot('projects').select().eq('userID', userID);
+
+		if (error) {
+			console.error(error, 'Error loading of projects');
+		}
+		return data as IProjects[];
+	},
 	delete: async (id: number) => {
-		await commentsRepository.deleteByProjectID(id)
-		await ticketRepository.deleteByProjectID(id)
-		await kanbanBoardsRepository.deleteByProjectID(id)
+		await commentsRepository.deleteByProjectID(id);
+		await ticketRepository.deleteByProjectID(id);
+		await kanbanBoardsRepository.deleteByProjectID(id);
 		const { error } = await supabaseRoot('projects').delete().eq('id', id);
 		if (error) {
 			return console.error(error, 'Error of delete project');

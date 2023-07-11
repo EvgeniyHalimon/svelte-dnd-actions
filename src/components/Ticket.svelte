@@ -24,14 +24,17 @@
 	const updateTitle = async (id: number) => {
 		await ticketRepository.updateTitle(id, newTitle);
 		const updatedColumns = $columns.map((column: IColumns) => {
-			return {...column, items: column.items.map((ticket: ITicket) => {
-                if(ticket.id === id){
-                    return {...ticket, title: newTitle}
-                }
-                return ticket;
-            })}
+			return {
+				...column,
+				items: column.items.map((ticket: ITicket) => {
+					if (ticket.id === id) {
+						return { ...ticket, title: newTitle };
+					}
+					return ticket;
+				})
+			};
 		});
-        columns.set(updatedColumns)
+		columns.set(updatedColumns);
 		isEditing = false;
 	};
 
@@ -52,10 +55,12 @@
 	};
 
 	const loadComments = async () => {
-		const commentsData = (await commentsRepository.getByTicketID(Number(ticket.id)))?.sort((a: IComments, b: IComments) => b.created_at.localeCompare(a.created_at)) as IComments[];
+		const commentsData = (await commentsRepository.getByTicketID(Number(ticket.id)))?.sort(
+			(a: IComments, b: IComments) => b.created_at.localeCompare(a.created_at)
+		) as IComments[];
 		comments.set(commentsData);
-		showModal = true
-	}
+		showModal = true;
+	};
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -70,7 +75,7 @@
 			{newTitle}
 		</p>
 		<TicketModal bind:showModal>
-			<ModalContent {ticket}/>
+			<ModalContent {ticket} />
 		</TicketModal>
 	{:else}
 		<!-- svelte-ignore a11y-autofocus -->

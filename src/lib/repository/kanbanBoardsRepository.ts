@@ -36,8 +36,8 @@ export const kanbanBoardsRepository = {
 		}
 	},
 	delete: async (id: number) => {
-		await commentsRepository.deleteByBoardID(id)
-		await ticketRepository.deleteByBoardID(id)
+		await commentsRepository.deleteByBoardID(id);
+		await ticketRepository.deleteByBoardID(id);
 		const { error } = await supabaseRoot('kanbanBoards').delete().eq('id', id);
 		if (error) {
 			return console.error(error, 'Error deleting of kanbanBoards');

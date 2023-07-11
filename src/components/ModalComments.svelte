@@ -9,8 +9,10 @@
 
 	const addComment = async () => {
 		await commentsRepository.post(ticket, newComment);
-		const newComments = (await commentsRepository.getByTicketID(ticket.id))?.sort((a: IComments, b: IComments) => b.created_at.localeCompare(a.created_at)) as IComments[];
-		comments.set(newComments)
+		const newComments = (await commentsRepository.getByTicketID(ticket.id))?.sort(
+			(a: IComments, b: IComments) => b.created_at.localeCompare(a.created_at)
+		) as IComments[];
+		comments.set(newComments);
 		newComment = '';
 	};
 </script>
@@ -29,5 +31,5 @@
 </div>
 
 {#each $comments as comment}
-	<Comment {comment}/>
+	<Comment {comment} />
 {/each}

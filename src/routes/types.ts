@@ -6,7 +6,7 @@ export interface ITicket {
 	title: string;
 	description: string;
 	position: number;
-	userID: string
+	userID: string;
 }
 
 export interface IKanbanBoard {
@@ -15,22 +15,23 @@ export interface IKanbanBoard {
 	projectID: number;
 	boardName: string;
 	position: number;
-	userID: string
+	userID: string;
 }
 
 export interface IProjects {
 	id: number;
 	created_at?: string;
 	projectName: string;
-	userID: string
+	userID: string;
 }
 
 export interface IColumns {
-	id: number,
-	boardName: string,
-	projectID: number,
-	position: number,
-	items: ITicket[]
+	id: number;
+	boardName: string;
+	projectID: number;
+	position: number;
+	userID: string;
+	items: ITicket[];
 }
 
 export interface IComments {
@@ -40,9 +41,9 @@ export interface IComments {
 	boardID: number;
 	projectID: number;
 	comment: string;
-	userID: string
+	userID: string;
 }
 
 export interface INewTicket extends IColumns {
-	title: string
+	title: string;
 }

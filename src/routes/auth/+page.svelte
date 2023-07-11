@@ -9,8 +9,12 @@
 </script>
 
 <h1>Register</h1>
-<form action="?/register" method="POST" class="flex flex-col gap-3 m-auto w-72 p-3 border-sky-200 border-2 rounded-sm">
-    <label for="email">Username</label>
+<form
+	action="?/register"
+	method="POST"
+	class="flex flex-col gap-3 m-auto w-72 p-3 border-sky-200 border-2 rounded-sm"
+>
+	<label for="email">Username</label>
 	<input
 		name="username"
 		id="username"

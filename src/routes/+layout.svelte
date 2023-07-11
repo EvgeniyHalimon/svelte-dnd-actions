@@ -24,9 +24,9 @@
 			}
 		});
 
-		if(session?.user.id){
+		if (session?.user.id) {
 			userID.set(session.user.id);
-			console.log("🚀 ~ file: +layout.svelte:30 ~ onMount ~ userID:", $userID)
+			console.log('🚀 ~ file: +layout.svelte:30 ~ onMount ~ userID:', $userID);
 		}
 
 		return () => subscription.unsubscribe();
@@ -37,7 +37,7 @@
 		if (error) {
 			console.log(error);
 		}
-	}; 
+	};
 </script>
 
 <div class="p-8 w-screen">
@@ -47,14 +47,14 @@
 			<a href="/projects" class="font-semibold text-3xl">Projects</a>
 		</div>
 		{#if data.session}
-		<form action="/logout" method="POST" on:submit={submitLogout}>
-			<button type="submit" class="btn btn-primary">Logout</button>
-		</form>
+			<form action="/logout" method="POST" on:submit={submitLogout}>
+				<button type="submit" class="btn btn-primary">Logout</button>
+			</form>
 		{:else}
-		<div class="flex gap-3">
-			<a href="/login" class="btn btn-primary">Login</a>
-			<a href="/auth" class="btn btn-secondary">Register</a>
-		</div>
+			<div class="flex gap-3">
+				<a href="/login" class="btn btn-primary">Login</a>
+				<a href="/auth" class="btn btn-secondary">Register</a>
+			</div>
 		{/if}
 	</nav>
 

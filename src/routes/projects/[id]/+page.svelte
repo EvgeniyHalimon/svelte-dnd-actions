@@ -16,7 +16,7 @@
 	let isEditing = false;
 	let isLoading = true;
 	let projectID = Number($page.params.id);
-	let projectName = $projects.find(project => project.id === projectID)?.projectName;
+	let projectName = $projects.find((project) => project.id === projectID)?.projectName;
 	kanbanBoards.set(data.kanbanBoards);
 
 	const flipDurationMs = 300;

@@ -24,7 +24,8 @@ export const commentsRepository = {
 				ticketID: ticket.id,
 				boardID: ticket.boardID,
 				projectID: ticket.projectID,
-                comment: newComment
+				userID: ticket.userID,
+				comment: newComment
 			}
 		]);
 		if (error) {

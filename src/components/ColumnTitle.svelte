@@ -47,13 +47,13 @@
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div 
+<div
 	class="flex justify-between items-baseline"
 	on:mouseenter={toggleVisibility}
 	on:mouseleave={toggleVisibility}
 >
 	{#if !isEditingColumnTitle}
-		<p >{column?.boardName}</p>
+		<p>{column?.boardName}</p>
 	{:else}
 		<input
 			type="text"
@@ -63,9 +63,7 @@
 			on:blur={() => updateColumnTitle(Number(column.id), boardName)}
 		/>
 	{/if}
-	<div class="{isVisible
-		? 'opacity-100'
-		: 'opacity-0'} flex items-center gap-2">
+	<div class="{isVisible ? 'opacity-100' : 'opacity-0'} flex items-center gap-2">
 		<button
 			class="cursor-pointer h-4 hover:opacity-50 transition-all duration-200"
 			on:click={() => setIsEditing(column.boardName)}

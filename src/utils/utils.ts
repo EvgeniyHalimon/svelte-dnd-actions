@@ -7,6 +7,7 @@ export function transformArray(boards: IKanbanBoard[], tickets: ITicket[]) {
 			boardName: board.boardName,
 			projectID: board.projectID,
 			position: board.position,
+			userID: board.userID,
 			items: tickets.filter((ticket: ITicket) => ticket.boardID === board.id)
 		}))
 		.sort((a: IKanbanBoard, b: IKanbanBoard) => a?.position - b?.position);
@@ -14,8 +15,8 @@ export function transformArray(boards: IKanbanBoard[], tickets: ITicket[]) {
 	return transformedBoard;
 }
 
-export function getDate(date: string){
+export function getDate(date: string) {
 	const d = new Date(date);
 
-	return `${d.toLocaleTimeString('en-GB')} ${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`
+	return `${d.toLocaleTimeString('en-GB')} ${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`;
 }
