@@ -11,17 +11,21 @@
 			...$projects,
 			{ projectName: `${vocab[Math.floor(Math.random() * vocab.length) + 1]} board` }
 		]; */
-
-		await projectRepository.post({
-			projectName: `${vocab[Math.floor(Math.random() * vocab.length) + 1]} board`,
-			userID: $userID
-		});
-		projects.set(await projectRepository.getByUserID($userID));
+		if ($userID) {
+			await projectRepository.post({
+				projectName: `${vocab[Math.floor(Math.random() * vocab.length) + 1]} board`,
+				userID: $userID
+			});
+			projects.set(await projectRepository.getByUserID($userID));
+		}
 	};
 
 	onMount(async () => {
-		const data = await projectRepository.getByUserID($userID);
-		projects.set(data);
+		if ($userID) {
+			const data = await projectRepository.getByUserID($userID);
+			console.log('🚀 ~ file: +page.svelte:24 ~ onMount ~ data:', data);
+			projects.set(data);
+		}
 	});
 </script>
 
