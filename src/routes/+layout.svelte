@@ -8,7 +8,7 @@
 	import 'iconify-icon';
 	import { goto, invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { userID } from '$lib/BoardsStore';
+	import { userID, userMetadata } from '$lib/BoardsStore';
 
 	export let data;
 
@@ -26,6 +26,7 @@
 
 		if (session?.user.id) {
 			userID.set(session.user.id);
+			userMetadata.set(data.session?.user.user_metadata)
 		}
 
 		return () => subscription.unsubscribe();
@@ -61,10 +62,6 @@
 			</div>
 		{/if}
 	</nav>
-
-	{#if data.session}
-		<p class="mb-4">Welcome, {data.session.user.user_metadata.name}</p>
-	{/if}
 
 	<slot />
 </div>

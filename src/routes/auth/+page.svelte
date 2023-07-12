@@ -64,7 +64,7 @@
 		/>
 		<button type="submit" class="p-2 rounded-md self-center bg-blue-600">Sign up</button>
 	</form>
-	<form method="POST" use:enhance={submitSocialLogin} class="flex justify-evenly">
+	<form method="POST" use:enhance={submitSocialLogin} class="flex justify-evenly mb-3">
 		<button
 			formaction="?/login&provider=github"
 			class="p-2 rounded-md border-blue-600 border-2 bg-transparent hover:bg-blue-900 trasition-all duration-300"

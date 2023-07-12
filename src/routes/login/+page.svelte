@@ -35,7 +35,7 @@
 		autocomplete="off"
 		class="text-black caret-black rounded-md h-8 pl-1 bg-stone-300 border-0 formInput"
 	/>
-	<button type="submit" class="p-2 rounded-md self-center bg-blue-600">Login</button>
+	<button type="submit" class="p-2 rounded-md self-center bg-blue-600 mb-3">Login</button>
 	<p class="text-center">Don't have an account? <a href="/auth" class="underline">Jump in!</a></p>
 </form>
 
