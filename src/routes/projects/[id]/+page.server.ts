@@ -5,8 +5,8 @@ import type { IKanbanBoard } from '../../types.js';
 export async function load({ params, locals }) {
 	const kanbanBoards = (await kanbanBoardsRepository.get(Number(params.id))) as IKanbanBoard[];
 
-	if (await locals.getSession() === null) {
-		throw redirect(302, "/login")
+	if ((await locals.getSession()) === null) {
+		throw redirect(302, '/login');
 	}
 
 	return {

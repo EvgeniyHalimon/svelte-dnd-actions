@@ -9,7 +9,6 @@
 	import { goto, invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { userID } from '$lib/BoardsStore';
-	import { fade, fly } from 'svelte/transition';
 
 	export let data;
 
@@ -37,7 +36,7 @@
 		if (error) {
 			console.log(error);
 		}
-		goto('/')
+		goto('/');
 	};
 </script>
 
@@ -47,7 +46,7 @@
 			{#if $userID}
 				<a href="/dashboard" class="font-semibold text-3xl mr-6">Dashboard</a>
 				<a href="/projects" class="font-semibold text-3xl">Projects</a>
-				{:else}
+			{:else}
 				<h1 class="text-3xl">Easy kanban boards</h1>
 			{/if}
 		</div>
@@ -64,7 +63,7 @@
 	</nav>
 
 	{#if data.session}
-		<p class="mb-4">Welcome, {data.session.user.user_metadata.username}</p>
+		<p class="mb-4">Welcome, {data.session.user.user_metadata.name}</p>
 	{/if}
 
 	<slot />

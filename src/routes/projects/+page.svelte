@@ -25,7 +25,7 @@
 		if ($userID) {
 			const data = await projectRepository.getByUserID($userID);
 			projects.set(data);
-		} 
+		}
 	});
 </script>
 
