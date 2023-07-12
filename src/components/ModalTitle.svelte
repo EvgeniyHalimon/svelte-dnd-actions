@@ -5,21 +5,24 @@
 
 	export let title: string;
 	export let id: number;
-	let newTitle: string
+	let newTitle: string;
 	let isUpdating = false;
 
 	const save = async (id: number, newTitle: string) => {
 		await ticketRepository.updateTitle(id, newTitle);
-        const updatedColumns = $columns.map((column: IColumns) => {
-			return {...column, items: column.items.map((ticket: ITicket) => {
-                if(ticket.id === id){
-                    return {...ticket, title: newTitle}
-                }
-                return ticket;
-            })}
+		const updatedColumns = $columns.map((column: IColumns) => {
+			return {
+				...column,
+				items: column.items.map((ticket: ITicket) => {
+					if (ticket.id === id) {
+						return { ...ticket, title: newTitle };
+					}
+					return ticket;
+				})
+			};
 		});
-        columns.set(updatedColumns)
-        isUpdating = false;
+		columns.set(updatedColumns);
+		isUpdating = false;
 	};
 
 	const cancel = () => {
@@ -27,10 +30,10 @@
 		newTitle = title;
 	};
 
-    const setIsUpdating = () => {
-        isUpdating = true;
-        newTitle = title;
-    }
+	const setIsUpdating = () => {
+		isUpdating = true;
+		newTitle = title;
+	};
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -60,5 +63,5 @@
 		</div>
 	</div>
 {:else}
-    <p class="text-white font-semibold text-xl mb-3" on:click={setIsUpdating}>{title}</p>
+	<p class="text-white font-semibold text-xl mb-3" on:click={setIsUpdating}>{title}</p>
 {/if}

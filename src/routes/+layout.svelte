@@ -6,12 +6,61 @@
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
 	import 'iconify-icon';
+	import { goto, invalidate } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { userID, userMetadata } from '$lib/BoardsStore';
+
+	export let data;
+
+	let { supabase, session } = data;
+	$: ({ supabase, session } = data);
+
+	onMount(() => {
+		const {
+			data: { subscription }
+		} = supabase.auth.onAuthStateChange((event, _session) => {
+			if (_session?.expires_at !== session?.expires_at) {
+				invalidate('supabase:auth');
+			}
+		});
+
+		if (session?.user.id) {
+			userID.set(session.user.id);
+			userMetadata.set(data.session?.user.user_metadata)
+		}
+
+		return () => subscription.unsubscribe();
+	});
+
+	const submitLogout = async () => {
+		const { error } = await supabase.auth.signOut();
+		if (error) {
+			console.log(error);
+		}
+		goto('/');
+	};
 </script>
 
 <div class="p-8 w-screen">
-	<nav class="pb-10">
-		<a href="/" class="font-semibold text-3xl mr-6">Dashboard</a>
-		<a href="/projects" class="font-semibold text-3xl">Projects</a>
+	<nav class="pb-10 flex justify-between items-center">
+		<div class="flex gap-3">
+			{#if $userID}
+				<a href="/dashboard" class="font-semibold text-3xl mr-6">Dashboard</a>
+				<a href="/projects" class="font-semibold text-3xl">Projects</a>
+			{:else}
+				<h1 class="text-3xl">Easy kanban boards</h1>
+			{/if}
+		</div>
+		{#if data.session}
+			<form action="/logout" method="POST" on:submit={submitLogout}>
+				<button type="submit" class="btn btn-primary">Logout</button>
+			</form>
+		{:else}
+			<div class="flex gap-3">
+				<a href="/login" class="btn btn-primary">Login</a>
+				<a href="/auth" class="btn btn-secondary">Register</a>
+			</div>
+		{/if}
 	</nav>
 
 	<slot />

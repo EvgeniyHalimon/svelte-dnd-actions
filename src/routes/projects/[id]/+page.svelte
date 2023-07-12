@@ -16,10 +16,10 @@
 	let isEditing = false;
 	let isLoading = true;
 	let projectID = Number($page.params.id);
-	let projectName = $projects.find(project => project.id === projectID)?.projectName;
+	let projectName = $projects.find((project) => project.id === projectID)?.projectName;
 	kanbanBoards.set(data.kanbanBoards);
 
-	const flipDurationMs = 200;
+	const flipDurationMs = 300;
 
 	const add = () => {
 		isEditing = true;
@@ -49,7 +49,7 @@
 	<title>{projectName}</title>
 </svelte:head>
 
-<h1 class="pb-4">There will be kanban board {projectID}</h1>
+<h1 class="pb-4 text-xl">{projectName}</h1>
 {#if !isLoading}
 	<section
 		class="flex gap-10 min-w-full"
@@ -62,7 +62,7 @@
 				class="h-full w-64 min-w-[16rem] rounded-md bg-gray-800 p-3"
 				animate:flip={{ duration: flipDurationMs }}
 			>
-				<Column {column} {projectID} {flipDurationMs} {i} />
+				<Column {column} {projectID} {i} />
 			</div>
 		{/each}
 		{#if isEditing}

@@ -4,13 +4,14 @@
 	import AddTicket from '$components/AddTicket.svelte';
 	import ColumnTitle from '$components/ColumnTitle.svelte';
 	import { dndzone } from 'svelte-dnd-action';
+	import { flip } from 'svelte/animate';
 	import type { IColumns, ITicket } from '../routes/types';
 	import { ticketRepository } from '$lib/repository/ticketsRepository';
 
 	export let column: IColumns;
 	export let projectID: number;
-	export let flipDurationMs: number;
 	export let i: number;
+	let flipDurationMs = 300;
 
 	function getNextPosition(array: ITicket[], boardID: number) {
 		const data = array.filter((column) => column.boardID == boardID);
@@ -37,12 +38,21 @@
 <ColumnTitle {column} {projectID} />
 <div
 	class="flex flex-col"
-	use:dndzone={{ items: column?.items, flipDurationMs }}
+	use:dndzone={{
+		items: column?.items,
+		flipDurationMs,
+		dropTargetStyle: {
+			outline: '#1d4ed8 solid 2px',
+			height: `${column?.items.length ? 'auto' : '53px'}`
+		}
+	}}
 	on:consider={(e) => handleDndConsiderCards(column.id, e)}
 	on:finalize={(e) => handleDndFinalizeCards(column.id, e)}
 >
 	{#each column?.items as item (item.id)}
-		<Ticket ticket={item} {i} />
+		<div animate:flip={{ duration: flipDurationMs }}>
+			<Ticket ticket={item} {i} />
+		</div>
 	{/each}
 </div>
 <AddTicket position={getNextPosition(column?.items, Number(column?.id))} data={column} {i} />

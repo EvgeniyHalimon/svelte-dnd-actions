@@ -5,21 +5,24 @@
 
 	export let description: string;
 	export let id: number;
-	let newDescription: string
+	let newDescription: string;
 	let isUpdating = false;
 
 	const save = async (id: number, desc: string) => {
 		await ticketRepository.updateDescription(id, desc);
-        const updatedColumns = $columns.map((column: IColumns) => {
-			return {...column, items: column.items.map((ticket: ITicket) => {
-                if(ticket.id === id){
-                    return {...ticket, description: desc}
-                }
-                return ticket;
-            })}
+		const updatedColumns = $columns.map((column: IColumns) => {
+			return {
+				...column,
+				items: column.items.map((ticket: ITicket) => {
+					if (ticket.id === id) {
+						return { ...ticket, description: desc };
+					}
+					return ticket;
+				})
+			};
 		});
-        columns.set(updatedColumns)
-        isUpdating = false;
+		columns.set(updatedColumns);
+		isUpdating = false;
 	};
 
 	const cancel = () => {
@@ -27,10 +30,10 @@
 		newDescription = description;
 	};
 
-    const setIsUpdating = () => {
-        isUpdating = true;
-        newDescription = description;
-    }
+	const setIsUpdating = () => {
+		isUpdating = true;
+		newDescription = description;
+	};
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -42,7 +45,7 @@
 		<textarea
 			bind:value={newDescription}
 			autofocus
-			class="w-full border-0 h-32 bg-slate-900 text-white resize-none rounded-md"
+			class="w-full border-0 h-32 bg-slate-900 text-white resize-none rounded-md mb-2"
 		/>
 		<div>
 			<button

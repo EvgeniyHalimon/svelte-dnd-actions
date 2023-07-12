@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { columns, kanbanBoards, tickets } from '$lib/BoardsStore';
+	import { columns, kanbanBoards, tickets, userID } from '$lib/BoardsStore';
 	import { kanbanBoardsRepository } from '$lib/repository/kanbanBoardsRepository.js';
 	import type { IKanbanBoard } from '../routes/types';
 	import { transformArray } from '../utils/utils';
@@ -13,7 +13,8 @@
 		await kanbanBoardsRepository.post({
 			boardName: boardName,
 			projectID: projectID,
-			position: $kanbanBoards?.length + 1
+			position: $kanbanBoards?.length + 1,
+			userID: $userID
 		});
 		boardName = '';
 		isEditing = false;

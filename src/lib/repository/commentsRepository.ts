@@ -1,3 +1,4 @@
+import type { ITicket } from '../../routes/types';
 import { supabaseRoot } from '../../supabase';
 
 export const commentsRepository = {
@@ -12,21 +13,47 @@ export const commentsRepository = {
 		return tickets;
 	},
 	update: async (id: number, comment: string) => {
-		const { data, error } = await supabaseRoot('comments').update({ comment: comment }).eq('id', id);
+		const { error } = await supabaseRoot('comments').update({ comment: comment }).eq('id', id);
 		if (error) {
 			console.error(error, 'Error updating of title');
 		}
-		return data;
 	},
-	post: async (id: number, newComment: string) => {
+	post: async (ticket: ITicket, newComment: string) => {
 		const { error } = await supabaseRoot('comments').insert([
 			{
-				ticketID: id,
-                comment: newComment
+				ticketID: ticket.id,
+				boardID: ticket.boardID,
+				projectID: ticket.projectID,
+				userID: ticket.userID,
+				comment: newComment
 			}
 		]);
+		if (error) {
+			console.error(error, 'Error in posting of comment');
+		}
 	},
 	delete: async (id: number) => {
 		const { error } = await supabaseRoot('comments').delete().eq('id', id);
+		if (error) {
+			console.error(error, 'Error in deleting comment by id');
+		}
+	},
+	deleteByTicketID: async (ticketID: number) => {
+		const { error } = await supabaseRoot('comments').delete().eq('ticketID', ticketID);
+		if (error) {
+			console.error(error, 'Error in deleting comment by ticketID');
+		}
+	},
+	deleteByBoardID: async (boardID: number) => {
+		const { error } = await supabaseRoot('comments').delete().eq('boardID', boardID);
+		if (error) {
+			console.error(error, 'Error in deleting comment by of boardID');
+		}
+	},
+	deleteByProjectID: async (projectID: number) => {
+		const { error } = await supabaseRoot('comments').delete().eq('projectID', projectID);
+		if (error) {
+			console.error(error, 'Error in deleting comment by of projectID');
+		}
 	}
 };
