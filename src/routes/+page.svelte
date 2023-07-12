@@ -19,4 +19,7 @@
 		</p>
 		<a href="/auth" class="underline text-2xl">Jump in.</a>
 	</div>
+	{:else}
+	<h1>There will be dashboard</h1>
+	<a href="/projects" class="mb-3">Move along to see all Projects</a>
 {/if}

@@ -45,7 +45,7 @@
 	<nav class="pb-10 flex justify-between items-center">
 		<div class="flex gap-3">
 			{#if $userID}
-				<a href="/dashboard" class="font-semibold text-3xl mr-6">Dashboard</a>
+				<a href="/" class="font-semibold text-3xl mr-6">Dashboard</a>
 				<a href="/projects" class="font-semibold text-3xl">Projects</a>
 			{:else}
 				<h1 class="text-3xl">Easy kanban boards</h1>
